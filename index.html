@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Tamil Nadu — Discover the Culture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Modal isolated scroll styling */
+        .modal-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 3px;
+        }
+
+        .dark .modal-scroll::-webkit-scrollbar-thumb {
+            background-color: #334155;
+        }
+
+        @keyframes scrollTrain {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-scroll {
+            animation: scrollTrain 80s linear infinite;
+            /* slower speed */
+        }
+
+        /* Pause when hovering anywhere on the train */
+        .animate-scroll:hover {
+            animation-play-state: paused;
+        }
+
+        #district-train:hover .animate-scroll {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+
+<body class="bg-[#FCFAF6] text-stone-800 transition-colors duration-300 dark:bg-[#121412] dark:text-stone-200">
+
+    <header
+        class="bg-white/90 dark:bg-[#121412]/90 backdrop-blur-md border-b border-stone-100 dark:border-stone-800 sticky top-0 z-50 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center space-x-1">
+                <span
+                    class="font-serif text-3xl font-bold text-emerald-900 dark:text-emerald-50 tracking-tight">Explore</span>
+                <span class="font-serif text-3xl font-light text-emerald-600 dark:text-emerald-400">Tamil Nadu</span>
+            </div>
+
+            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                <div class="relative group py-2">
+                    <button
+                        class="flex items-center text-stone-700 dark:text-stone-300 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors focus:outline-none">
+                        Destinations
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 text-stone-400"></i>
+                    </button>
+                    <div
+                        class="absolute left-0 mt-3 w-[800px] bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 shadow-2xl rounded-xl p-8 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <div
+                            class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-800 via-amber-400 to-emerald-200">
+                        </div>
+                        <div class="grid grid-cols-4 gap-8">
+                            <div>
+                                <h3
+                                    class="text-xs uppercase tracking-widest text-emerald-800 dark:text-emerald-400 font-bold mb-4">
+                                    Chennai & North</h3>
+                                <ul class="space-y-2.5 text-sm text-stone-600 dark:text-stone-400">
+                                    <li><a href="districts.html?name=Chennai"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Chennai</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Kanchipuram"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Kanchipuram</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Chengalpattu"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Chengalpattu</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Vellore"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Vellore</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Tiruvannamalai"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Tiruvannamalai</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-xs uppercase tracking-widest text-emerald-800 dark:text-emerald-400 font-bold mb-4">
+                                    Central & Delta</h3>
+                                <ul class="space-y-2.5 text-sm text-stone-600 dark:text-stone-400">
+                                    <li><a href="districts.html?name=Thanjavur"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Thanjavur</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Tiruchirappalli"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Tiruchirappalli</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Nagapattinam"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Nagapattinam</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Tiruvarur"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Tiruvarur</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Ariyalur"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Ariyalur</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-xs uppercase tracking-widest text-emerald-800 dark:text-emerald-400 font-bold mb-4">
+                                    The South</h3>
+                                <ul class="space-y-2.5 text-sm text-stone-600 dark:text-stone-400">
+                                    <li><a href="districts.html?name=Madurai"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Madurai</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Kanyakumari"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Kanyakumari</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Ramanathapuram"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Ramanathapuram</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Tirunelveli"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Tirunelveli</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Tuticorin"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Tuticorin</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-xs uppercase tracking-widest text-emerald-800 dark:text-emerald-400 font-bold mb-4">
+                                    West & Hills</h3>
+                                <ul class="space-y-2.5 text-sm text-stone-600 dark:text-stone-400">
+                                    <li><a href="districts.html?name=Coimbatore"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Coimbatore</a>
+                                    </li>
+                                    <li><a href="districts.html?name=The%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Nilgiris"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>The
+                                            Nilgiris</a></li>
+                                    <li><a href="districts.html?name=Dindigul"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Dindigul</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Salem"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Salem</a>
+                                    </li>
+                                    <li><a href="districts.html?name=Erode"
+                                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                                data-lucide="map-pin"
+                                                class="w-3 h-3 mr-2 text-stone-300 dark:text-stone-600"></i>Erode</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="hidden md:flex items-center space-x-4 relative">
+                <div class="relative">
+                    <input type="text" id="header-search-loc" autocomplete="off" placeholder="Search ..."
+                        class="w-64 bg-stone-50 dark:bg-[#1E221E] text-stone-800 dark:text-stone-200 text-sm rounded-lg py-2.5 px-4 pl-10 focus:outline-none focus:ring-1 focus:ring-emerald-400 border border-stone-100 dark:border-stone-800 focus:bg-white dark:focus:bg-[#242924] transition-all">
+                    <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <ul id="header-search-suggestions"
+                        class="absolute z-50 w-full mt-1 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 rounded-lg shadow-lg hidden max-h-48 overflow-y-auto">
+                    </ul>
+                </div>
+                <button id="theme-toggle"
+                    class="p-2.5 bg-stone-50 dark:bg-[#1E221E] border border-stone-100 dark:border-stone-800 rounded-lg text-stone-600 dark:text-stone-400 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors">
+                    <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
+                    <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 lg:py-16">
+
+        <div class="max-w-3xl mb-12">
+            <span class="text-xs uppercase tracking-widest text-amber-600 font-bold mb-1 block">Incredible India</span>
+            <h1 class="text-5xl lg:text-6xl font-serif font-bold text-emerald-950 dark:text-emerald-50 leading-tight">
+                Let's explore the beauty of <br><span
+                    class="font-serif font-light italic text-emerald-600 dark:text-emerald-400">Tamil Nadu</span>
+            </h1>
+            <p class="text-stone-600 dark:text-stone-400 mt-4 text-lg font-light leading-relaxed">
+                Dive deep into the rich heritage, vast wildlife habitats, and breathtaking landscapes. Uncover the
+                stories and map out your next great journey.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-20">
+
+            <div
+                class="md:col-span-2 md:row-span-2 group relative bg-white dark:bg-[#1A1D1A] rounded-3xl overflow-hidden shadow-md border border-stone-100 dark:border-stone-800 hover:shadow-2xl transition-all duration-500">
+                <div class="h-[400px] md:h-[500px] bg-cover bg-center group-hover:scale-105 transition-all duration-700"
+                    style="background-image: url('Main/trecking.jpg');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-8 text-white">
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Adventure</span>
+                    <h2 class="text-3xl font-serif font-bold mt-1 mb-2">Trekking</h2>
+                    <p class="text-sm text-stone-200 font-light leading-relaxed max-w-sm mb-4">Scale the misty green
+                        heights of the Western Ghats mountains.</p>
+                    <a href="#"
+                        class="inline-flex items-center text-xs font-medium uppercase tracking-wider text-white border-b border-white pb-1 hover:text-amber-300 hover:border-amber-300 transition-colors">Explore
+                        Trails <i data-lucide="arrow-up-right" class="w-4 h-4 ml-1"></i></a>
+                </div>
+            </div>
+
+            <div
+                class="md:col-span-2 group relative bg-white dark:bg-[#1A1D1A] rounded-3xl overflow-hidden shadow-md border border-stone-100 dark:border-stone-800 hover:shadow-2xl transition-all duration-500">
+                <div class="h-[240px] bg-cover bg-center group-hover:scale-105 transition-all duration-700"
+                    style="background-image: url('Main/ancient.webp');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-6 text-white">
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Culture</span>
+                    <h2 class="text-2xl font-serif font-bold mt-1">Ancient Heritage</h2>
+                    <a href="#"
+                        class="text-xs uppercase tracking-wider text-white border-b border-white pb-1 mt-2 inline-block hover:text-amber-300 hover:border-amber-300 transition-colors">View
+                        25+ Historical Sites</a>
+                </div>
+            </div>
+
+            <div
+                class="md:col-span-1 group relative bg-white dark:bg-[#1A1D1A] rounded-3xl overflow-hidden shadow-md border border-stone-100 dark:border-stone-800 hover:shadow-2xl transition-all duration-500">
+                <div class="h-[240px] bg-cover bg-center group-hover:scale-105 transition-all duration-700"
+                    style="background-image: url('Main/wildlife.jpg');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-6 text-white">
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Nature</span>
+                    <h2 class="text-xl font-serif font-bold mt-1">Wildlife Reserves</h2>
+                </div>
+            </div>
+
+            <div
+                class="md:col-span-1 bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-6 flex flex-col justify-between text-white shadow-md hover:shadow-2xl transition-all duration-500 group">
+                <div>
+                    <div
+                        class="w-10 h-10 bg-emerald-700/50 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cloud" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-2">Hill Stations</h3>
+                    <p class="text-xs text-emerald-100 font-light leading-relaxed">Wake up to misty rolling tea fields
+                        and pure serenity across 75+ mountain escapes.</p>
+                </div>
+                <a href="#"
+                    class="text-xs uppercase tracking-widest font-medium text-white flex items-center group-hover:text-amber-300 transition-colors">
+                    Browse Escapes <i data-lucide="arrow-right"
+                        class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div
+                class="md:col-span-2 group relative bg-white dark:bg-[#1A1D1A] rounded-3xl overflow-hidden shadow-md border border-stone-100 dark:border-stone-800 hover:shadow-2xl transition-all duration-500">
+                <div class="h-[200px] bg-cover bg-center group-hover:scale-105 transition-all duration-700"
+                    style="background-image: url('Main/holy.avif');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-6 text-white">
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Spiritual</span>
+                    <h2 class="text-2xl font-serif font-bold mt-1">Holy Pilgrimages</h2>
+                </div>
+            </div>
+
+            <div
+                class="md:col-span-2 group relative bg-white dark:bg-[#1A1D1A] rounded-3xl overflow-hidden shadow-md border border-stone-100 dark:border-stone-800 hover:shadow-2xl transition-all duration-500">
+                <div class="h-[200px] bg-cover bg-center group-hover:scale-105 transition-all duration-700"
+                    style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1000&q=80');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 p-6 text-white">
+                    <span class="text-xs uppercase tracking-widest text-amber-300 font-bold">Coastal</span>
+                    <h2 class="text-2xl font-serif font-bold mt-1">Sun-Kissed Beaches</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="mb-20 overflow-hidden">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Explore</span>
+                <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50">
+                    Tamil Nadu Districts
+                </h2>
+            </div>
+
+            <div class="relative w-full overflow-hidden">
+                <div id="district-train" class="flex gap-6 w-max animate-scroll">
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="mb-24 bg-gradient-to-br from-white to-emerald-50/30 dark:from-[#1A1D1A] dark:to-[#161a16] border border-emerald-100 dark:border-stone-800 rounded-3xl p-8 md:p-12 shadow-[0_4px_25px_rgba(6,78,59,0.03)] transition-colors duration-300">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+
+                <div class="lg:col-span-3">
+                    <span
+                        class="text-xs uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold mb-3 block">State
+                        Overview</span>
+                    <h2
+                        class="text-3xl md:text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50 mb-5 leading-tight">
+                        The Vibrant Soul of South India</h2>
+                    <p class="text-stone-600 dark:text-stone-400 text-sm md:text-base font-light leading-relaxed mb-6">
+                        Tamil Nadu is a captivating realm where a living, ancient culture thrives alongside booming
+                        modernity. It is home to one of humanity's longest-surviving classical languages, towering
+                        Dravidian temples that pierce the sky, and sweeping coastlines shaped by the Bay of Bengal.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <span
+                            class="inline-flex items-center text-xs font-semibold text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-900/30 px-3.5 py-2 rounded-full border border-emerald-200/50 dark:border-emerald-800/50"><i
+                                data-lucide="languages" class="w-4 h-4 mr-2 text-emerald-600"></i>Tamil Language</span>
+                        <span
+                            class="inline-flex items-center text-xs font-semibold text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-900/30 px-3.5 py-2 rounded-full border border-emerald-200/50 dark:border-emerald-800/50"><i
+                                data-lucide="music" class="w-4 h-4 mr-2 text-emerald-600"></i>Bharatanatyam Dance</span>
+                        <span
+                            class="inline-flex items-center text-xs font-semibold text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-900/30 px-3.5 py-2 rounded-full border border-emerald-200/50 dark:border-emerald-800/50"><i
+                                data-lucide="utensils" class="w-4 h-4 mr-2 text-emerald-600"></i>Chettinad
+                            Cuisine</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div
+                            class="flex items-start space-x-3 bg-white dark:bg-[#1E221E] p-4 rounded-xl border border-stone-100 dark:border-stone-800 shadow-sm">
+                            <i data-lucide="map" class="w-6 h-6 text-emerald-600"></i>
+                            <div>
+                                <p class="text-xs text-stone-400 font-bold uppercase">Coastline Area</p>
+                                <p class="text-stone-800 dark:text-stone-200 font-medium text-sm">1,076 Kilometers (2nd
+                                    Longest in India)</p>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-start space-x-3 bg-white dark:bg-[#1E221E] p-4 rounded-xl border border-stone-100 dark:border-stone-800 shadow-sm">
+                            <i data-lucide="maximize" class="w-6 h-6 text-amber-600"></i>
+                            <div>
+                                <p class="text-xs text-stone-400 font-bold uppercase">Total Area</p>
+                                <p class="text-stone-800 dark:text-stone-200 font-medium text-sm">130,058 Sq. Kilometers
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 grid grid-cols-2 gap-5">
+                    <div
+                        class="bg-white dark:bg-[#1E221E] p-6 rounded-2xl border border-emerald-100 dark:border-stone-800 text-center hover:bg-emerald-900 dark:hover:bg-emerald-900 group transition-all duration-500 shadow-sm hover:shadow-emerald-200/50">
+                        <p
+                            class="font-serif text-3xl font-bold text-emerald-900 dark:text-emerald-50 group-hover:text-amber-300 mb-1">
+                            2000+</p>
+                        <p
+                            class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 group-hover:text-white font-semibold">
+                            Years of History</p>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-[#1E221E] p-6 rounded-2xl border border-emerald-100 dark:border-stone-800 text-center hover:bg-emerald-900 dark:hover:bg-emerald-900 group transition-all duration-500 shadow-sm hover:shadow-emerald-200/50">
+                        <p
+                            class="font-serif text-3xl font-bold text-emerald-900 dark:text-emerald-50 group-hover:text-amber-300 mb-1">
+                            5</p>
+                        <p
+                            class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 group-hover:text-white font-semibold">
+                            UNESCO Sites</p>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-[#1E221E] p-6 rounded-2xl border border-emerald-100 dark:border-stone-800 text-center hover:bg-emerald-900 dark:hover:bg-emerald-900 group transition-all duration-500 shadow-sm hover:shadow-emerald-200/50">
+                        <p
+                            class="font-serif text-3xl font-bold text-emerald-900 dark:text-emerald-50 group-hover:text-amber-300 mb-1">
+                            33,000+</p>
+                        <p
+                            class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 group-hover:text-white font-semibold">
+                            Ancient Temples</p>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-[#1E221E] p-6 rounded-2xl border border-emerald-100 dark:border-stone-800 text-center hover:bg-emerald-900 dark:hover:bg-emerald-900 group transition-all duration-500 shadow-sm hover:shadow-emerald-200/50">
+                        <p
+                            class="font-serif text-3xl font-bold text-emerald-900 dark:text-emerald-50 group-hover:text-amber-300 mb-1">
+                            38</p>
+                        <p
+                            class="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 group-hover:text-white font-semibold">
+                            Total Districts</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <section class="mb-20">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1"
+                data-translate="leadership">Leadership</span>
+            <h2 class="text-4xl font-serif font-bold text-emerald-950 mb-3" data-translate="ministersTitle">Cabinet
+                Council of Ministers</h2>
+            <p class="text-stone-500 text-sm font-light" data-translate="ministersSubtitle">The leadership driving
+                governance and development in Tamil Nadu.</p>
+
+            <button id="toggle-ministers-btn"
+                class="mt-6 inline-flex items-center bg-emerald-800 text-white text-sm font-semibold tracking-wide px-7 py-3 rounded-full hover:bg-emerald-700 transition-colors shadow-md hover:shadow-emerald-200">
+                <i data-lucide="users" class="w-4 h-4 mr-2"></i> <span data-translate="viewAll">View All</span> <span
+                    id="minister-count" class="mx-1">34</span> <span data-translate="ministers">Ministers</span>
+            </button>
+        </div>
+    </section>
+
+    </main>
+
+    <div id="ministers-modal"
+        class="hidden fixed inset-0 z-[100] bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div
+            class="bg-white w-full max-w-4xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-stone-100">
+
+            <div class="border-b border-stone-100 p-6 flex justify-between items-center bg-emerald-50/50">
+                <div>
+                    <h2 class="text-2xl font-serif font-bold text-emerald-950" data-translate="modalTitle">Council of
+                        Ministers</h2>
+                    <p class="text-xs text-emerald-700 font-medium" data-translate="modalSubtitle">Tamil Nadu State
+                        Cabinet — 34 Members</p>
+                </div>
+                <button id="close-modal-btn"
+                    class="text-stone-400 hover:text-emerald-700 hover:bg-emerald-50 p-2 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8 overflow-y-auto modal-scroll bg-white">
+                <div id="ministers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+            </div>
+
+            <div
+                class="border-t border-stone-100 bg-stone-50/80 px-6 py-4 flex justify-between items-center text-xs text-stone-500">
+                <span data-translate="footerGov">Official Government Cabinet Data</span>
+                <span><span data-translate="footerActive">Active</span> 2026</span>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="site-footer">
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 YourBrand. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // ---------------- DARK MODE LOGIC ----------------
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function () {
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // ---------------- DISTRICT TRAIN GENERATION ----------------
+        const districts = [
+            { name: "Chennai", icon: "🏙️" },
+            { name: "Coimbatore", icon: "🏞️" },
+            { name: "Madurai", icon: "🛕" },
+            { name: "Salem", icon: "🌄" },
+            { name: "Erode", icon: "🌊" },
+            { name: "Trichy", icon: "🏰" },
+            { name: "Vellore", icon: "🏯" },
+            { name: "Thoothukudi", icon: "⚓" },
+            { name: "Tirunelveli", icon: "🛕" },
+            { name: "Dindigul", icon: "⛰️" },
+            { name: "Thanjavur", icon: "🏛️" },
+            { name: "Kanchipuram", icon: "🛕" },
+            { name: "Cuddalore", icon: "🌴" },
+            { name: "Karur", icon: "🏡" },
+            { name: "Nagapattinam", icon: "🌊" },
+            { name: "Namakkal", icon: "🗿" },
+            { name: "Nilgiris", icon: "🌿" },
+            { name: "Krishnagiri", icon: "🍃" },
+            { name: "Dharmapuri", icon: "🌊" },
+            { name: "Tiruppur", icon: "👕" }
+        ];
+
+        const container = document.getElementById("district-train");
+        const allDistricts = [...districts, ...districts]; // Doubled for seamless scrolling
+
+        allDistricts.forEach(d => {
+            const card = document.createElement("div");
+            card.className = `
+                min-w-[220px] h-44 rounded-2xl flex flex-col items-center justify-center
+                text-white font-semibold text-lg
+                shadow-xl relative overflow-hidden
+                bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400
+                hover:scale-105 transition duration-300
+            `;
+
+            card.innerHTML = `
+                <div class="text-5xl mb-2">${d.icon}</div>
+                <div>${d.name}</div>
+                <div class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition"></div>
+            `;
+            container.appendChild(card);
+        });
+
+
+
+        // ---------------- DISTRICT AUTOCOMPLETE ----------------
+        const tnDistrictsFull = [
+            "Ariyalur", "Chengalpattu", "Chennai", "Coimbatore", "Cuddalore", "Dharmapuri", "Dindigul", "Edappadi", "Erode", "Kallakurichi", "Kanchipuram", "Kanyakumari", "Karur", "Krishnagiri", "Madurai", "Mayiladuthurai", "Nagapattinam", "Namakkal", "Nilgiris", "Perambalur", "Pudukkottai", "Ramanathapuram", "Ranipet", "Salem", "Sankagiri", "Sivaganga", "Tenkasi", "Thanjavur", "Theni", "Thoothukudi", "Tiruchirappalli", "Tirunelveli", "Tirupathur", "Tiruppur", "Tiruvallur", "Tiruvannamalai", "Tiruvarur", "Vellore", "Viluppuram", "Virudhunagar"
+        ];
+
+        function setupAutocomplete(inputId, suggestionsId) {
+            const input = document.getElementById(inputId);
+            const suggestionsList = document.getElementById(suggestionsId);
+
+            input.addEventListener('input', () => {
+                const query = input.value.trim().toLowerCase();
+                suggestionsList.innerHTML = '';
+
+                // Show suggestion only after 3 characters
+                if (query.length >= 3) {
+                    const matches = tnDistrictsFull.filter(d => d.toLowerCase().includes(query));
+
+                    if (matches.length > 0) {
+                        matches.forEach(match => {
+                            const li = document.createElement('li');
+                            li.className = 'px-4 py-2 text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-[#242924] cursor-pointer transition-colors';
+                            li.textContent = match;
+                            li.addEventListener('mousedown', () => {
+                                input.value = match;
+                                suggestionsList.classList.add('hidden');
+                            });
+                            suggestionsList.appendChild(li);
+                        });
+                        suggestionsList.classList.remove('hidden');
+                    } else {
+                        suggestionsList.classList.add('hidden');
+                    }
+                } else {
+                    suggestionsList.classList.add('hidden');
+                }
+            });
+
+            input.addEventListener('blur', () => {
+                suggestionsList.classList.add('hidden');
+            });
+
+            input.addEventListener('focus', () => {
+                if (input.value.trim().length >= 3 && suggestionsList.children.length > 0) {
+                    suggestionsList.classList.remove('hidden');
+                }
+            });
+        }
+
+
+        setupAutocomplete('header-search-loc', 'header-search-suggestions');
+    </script>
+    <script>
+        lucide.createIcons();
+
+        // Translations Dictionary
+        const translations = {
+            en: {
+                explore: "Explore",
+                tamilNadu: "Tamil Nadu",
+                destinations: "Destinations",
+                chennaiNorth: "Chennai & North",
+                chennai: "Chennai", kanchipuram: "Kanchipuram", chengalpattu: "Chengalpattu", vellore: "Vellore", tiruvannamalai: "Tiruvannamalai",
+                centralDelta: "Central & Delta",
+                thanjavur: "Thanjavur", trichy: "Tiruchirappalli", nagapattinam: "Nagapattinam", tiruvarur: "Tiruvarur", ariyalur: "Ariyalur",
+                theSouth: "The South",
+                madurai: "Madurai", kanyakumari: "Kanyakumari", ramnad: "Ramanathapuram", tirunelveli: "Tirunelveli", tuticorin: "Tuticorin",
+                westHills: "West & Hills",
+                coimbatore: "Coimbatore", nilgiris: "The Nilgiris", dindigul: "Dindigul", salem: "Salem", erode: "Erode",
+                incredibleIndia: "Incredible India",
+                heroTitle: "Let's explore the beauty of",
+                heroSubtitle: "Dive deep into the rich heritage, vast wildlife habitats, and breathtaking landscapes. Uncover the stories and map out your next great journey.",
+                adventure: "Adventure", trekking: "Trekking", trekDesc: "Scale the misty green heights of the Western Ghats mountains.", exploreTrails: "Explore Trails",
+                culture: "Culture", ancientHeritage: "Ancient Heritage", viewSites: "View 25+ Historical Sites",
+                nature: "Nature", wildlife: "Wildlife Reserves",
+                hillStations: "Hill Stations", hillDesc: "Wake up to misty rolling tea fields and pure serenity across 75+ mountain escapes.", browseEscapes: "Browse Escapes",
+                spiritual: "Spiritual", holyPilgrimages: "Holy Pilgrimages",
+                coastal: "Coastal", beaches: "Sun-Kissed Beaches",
+                stateOverview: "State Overview", overviewTitle: "The Vibrant Soul of South India",
+                overviewSubtitle: "Tamil Nadu is a captivating realm where a living, ancient culture thrives alongside booming modernity. It is home to one of humanity's longest-surviving classical languages, towering Dravidian temples that pierce the sky, and sweeping coastlines shaped by the Bay of Bengal.",
+                langTag: "Tamil Language", danceTag: "Bharatanatyam Dance", foodTag: "Chettinad Cuisine",
+                coastline: "Coastline Area", coastlineVal: "1,076 Kilometers (2nd Longest in India)",
+                totalArea: "Total Area", totalAreaVal: "130,058 Sq. Kilometers",
+                statHistory: "Years of History", statUnesco: "UNESCO Sites", statTemples: "Ancient Temples", statDistricts: "Total Districts",
+                leadership: "Leadership", ministersTitle: "Cabinet Council of Ministers", ministersSubtitle: "The leadership driving governance and development in Tamil Nadu.",
+                viewAll: "View All", ministers: "Ministers",
+                modalTitle: "Council of Ministers", modalSubtitle: "Tamil Nadu State Cabinet — 34 Members",
+                footerGov: "Official Government Cabinet Data", footerActive: "Active"
+            },
+            ta: {
+                explore: "ஆராயுங்கள்",
+                tamilNadu: "தமிழ்நாடு",
+                destinations: "இலக்குகள்",
+                chennaiNorth: "சென்னை & வடக்கு",
+                chennai: "சென்னை", kanchipuram: "காஞ்சிபுரம்", chengalpattu: "செங்கல்பட்டு", vellore: "வேலூர்", tiruvannamalai: "திருவண்ணாமலை",
+                centralDelta: "மத்திய & டெல்டா",
+                thanjavur: "தஞ்சாவூர்", trichy: "திருச்சிராப்பள்ளி", nagapattinam: "நாகப்பட்டினம்", tiruvarur: "திருவாரூர்", ariyalur: "அரியலூர்",
+                theSouth: "தெற்கு",
+                madurai: "மதுரை", kanyakumari: "கன்னியாகுமரி", ramnad: "ராமநாதபுரம்", tirunelveli: "திருநெல்வேலி", tuticorin: "தூத்துக்குடி",
+                westHills: "மேற்கு & மலைகள்",
+                coimbatore: "கோயம்புத்தூர்", nilgiris: "நீலகிரி", dindigul: "திண்டுக்கல்", salem: "சேலம்", erode: "ஈரோடு",
+                incredibleIndia: "இன்க்ரெடிபிள் இந்தியா",
+                heroTitle: "அழகை ஆராய்வோம்",
+                heroSubtitle: "வளமான பாரம்பரியம், பரந்த வனவிலங்கு வாழ்விடங்கள் மற்றும் மூச்சுத்திணறல் நிலப்பரப்புகளில் ஆழமாக மூழ்குங்கள். கதைகளைக் கண்டறிந்து உங்களின் அடுத்த சிறந்த பயணத்தைத் திட்டமிடுங்கள்.",
+                adventure: "சாகசம்", trekking: "மலையேற்றம்", trekDesc: "மேற்குத் தொடர்ச்சி மலையின் மூடுபனி படர்ந்த பசுமையான உயரங்களை அளவிடுங்கள்.", exploreTrails: "சுவடுகளை ஆராயுங்கள்",
+                culture: "கலாச்சாரம்", ancientHeritage: "பண்டைய பாரம்பரியம்", viewSites: "25+ வரலாற்று சிறப்புமிக்க இடங்களைப் பார்வையிடவும்",
+                nature: "இயற்கை", wildlife: "வனவிலங்கு காப்பகங்கள்",
+                hillStations: "மலை வாசஸ்தலங்கள்", hillDesc: "75+ மலைவாசஸ்தலங்களில் மூடுபனி படர்ந்த தேயிலை வயல்கள் மற்றும் தூய அமைதியுடன் எழுந்திருங்கள்.", browseEscapes: "தப்பித்தல்களை உலாவுக",
+                spiritual: "ஆன்மீகம்", holyPilgrimages: "புனித யாத்திரைகள்",
+                coastal: "கடலோரம்", beaches: "சூரியன் முத்தமிட்ட கடற்கரைகள்",
+                stateOverview: "மாநில கண்ணோட்டம்", overviewTitle: "தென்னிந்தியாவின் துடிப்பான ஆன்மா",
+                overviewSubtitle: "தமிழ்நாடு ஒரு வசீகரிக்கும் சாம்ராஜ்யமாகும், அங்கு வாழும், பண்டைய கலாச்சாரம் வளர்ந்து வரும் நவீனத்துவத்துடன் செழித்து வளர்கிறது. மனிதகுலத்தின் மிக நீண்ட காலம் உயிர்வாழும் செம்மொழிகளில் ஒன்று, வானைத் துளைக்கும் உயரமான திராவிடக் கோயில்கள் மற்றும் வங்காள விரிகுடாவால் வடிவமைக்கப்பட்ட பரந்த கடற்கரைகள் இங்கு உள்ளன.",
+                langTag: "தமிழ் மொழி", danceTag: "பரதநாட்டிய நடனம்", foodTag: "செட்டிநாடு உணவு வகைகள்",
+                coastline: "கடற்கரை பகுதி", coastlineVal: "1,076 கிலோமீட்டர்கள் (இந்தியாவில் 2வது நீளமானது)",
+                totalArea: "மொத்த பரப்பளவு", totalAreaVal: "130,058 சதுர கிலோமீட்டர்கள்",
+                statHistory: "ஆண்டுகள் பழமையான வரலாறு", statUnesco: "யுனெஸ்கோ தளங்கள்", statTemples: "பண்டைய கோயில்கள்", statDistricts: "மொத்த மாவட்டங்கள்",
+                leadership: "தலைமை", ministersTitle: "அமைச்சரவை சபை", ministersSubtitle: "தமிழ்நாட்டின் ஆட்சி மற்றும் வளர்ச்சியை உந்தித்தள்ளும் தலைமை.",
+                viewAll: "அனைத்தையும் பார்", ministers: "அமைச்சர்கள்",
+                modalTitle: "அமைச்சர்கள் குழு", modalSubtitle: "தமிழ்நாடு மாநில அமைச்சரவை — 34 உறுப்பினர்கள்",
+                footerGov: "அதிகாரப்பூர்வ அரசாங்க அமைச்சரவை தரவு", footerActive: "செயலில் உள்ளது"
+            }
+        };
+
+        const ministersList_EN = [
+            { name: "Thiru M.K. Stalin", portfolio: "Chief Minister; Public, General Administration, Home, Police" },
+            { name: "Thiru Udhayanidhi Stalin", portfolio: "Deputy Chief Minister; Youth Welfare, Sports Development, Planning & Development" },
+            { name: "Thiru Duraimurugan", portfolio: "Water Resources, Law, Legislation, and Elections" },
+            { name: "Thiru K.N. Nehru", portfolio: "Municipal Administration, Urban and Water Supply" },
+            { name: "Thiru I. Periyasamy", portfolio: "Rural Development, Panchayats, and Panchayat Union" },
+            { name: "Thiru E.V. Velu", portfolio: "Public Works (Buildings), Highways and Minor Ports" },
+            { name: "Thiru M.R.K. Panneerselvam", portfolio: "Agriculture and Farmers Welfare" },
+            { name: "Thiru K.K.S.S.R. Ramachandran", portfolio: "Revenue and Disaster Management" },
+            { name: "Thiru Thangam Thennarasu", portfolio: "Finance, Environment & Climate Change, and Archaeology" },
+            { name: "Thiru S. Regupathy", portfolio: "Law, Courts and Prisons" },
+            { name: "Thiru Siva V. Meyyanathan", portfolio: "Backward Classes Welfare" },
+            { name: "Thiru P.K. Sekarbabu", portfolio: "Hindu Religious and Charitable Endowments, CMDA" },
+            { name: "Thiru Ma. Subramanian", portfolio: "Health, Medical Education, and Family Welfare" },
+            { name: "Thiru Anbil Mahesh Poyyamozhi", portfolio: "School Education" },
+            { name: "Thiru R. Sakkarapani", portfolio: "Food and Civil Supplies, Consumer Protection" },
+            { name: "Thiru S.S. Sivasankar", portfolio: "Transport" },
+            { name: "Dr. T.R.B. Rajaa", portfolio: "Industries" },
+            { name: "Thiru T. Mano Thangaraj", portfolio: "Milk and Dairy Development" },
+            { name: "Thiru M.P. Saminathan", portfolio: "Information & Publicity, Film Technology" },
+            { name: "Tmt. P. Geetha Jeevan", portfolio: "Social Welfare and Women Empowerment" },
+            { name: "Tmt. N. Kayalvizhi Selvaraj", portfolio: "Adi Dravidar Welfare" },
+            { name: "Thiru R.S. Rajakannappan", portfolio: "Khadi and Village Industries" },
+            { name: "Thiru Gingee K.S. Masthan", portfolio: "Minorities Welfare and Non-Resident Tamils Welfare" },
+            { name: "Thiru V. Senthilbalaji", portfolio: "Electricity, Prohibition and Excise" },
+            { name: "Thiru K. Ramachandran", portfolio: "Tourism" },
+            { name: "Thiru R. Gandhi", portfolio: "Handlooms and Textiles" },
+            { name: "Thiru P. Moorthy", portfolio: "Commercial Taxes and Registration" },
+            { name: "Thiru Palanivel Thiaga Rajan", portfolio: "Information Technology and Digital Services" },
+            { name: "Thiru S. Muthusamy", portfolio: "Housing and Urban Development" },
+            { name: "Thiru G.V. Markandayan", portfolio: "Handicrafts and Khadi" },
+            { name: "Dr. M. Mathiventhan", portfolio: "Forests" },
+            { name: "Thiru Anita R. Radhakrishnan", portfolio: "Fisheries and Fishermen Welfare" },
+            { name: "Thiru T.M. Anbarasan", portfolio: "Micro, Small and Medium Enterprises (MSME)" },
+            { name: "Thiru K. Pitchandi", portfolio: "Deputy Speaker" }
+        ];
+
+        const ministersList_TA = [
+            { name: "திரு மு.க. ஸ்டாலின்", portfolio: "முதல்வர்; பொது, பொது நிர்வாகம், உள்்துறை, காவல்" },
+            { name: "திரு உதயநிதி ஸ்டாலின்", portfolio: "துணை முதல்வர்; இளைஞர் நலன், விளையாட்டு மேம்பாடு, திட்டமிடல் & வளர்ச்சி" },
+            { name: "திரு துரைமுருகன்", portfolio: "நீர்வள ஆதாரங்கள், சட்டம், சட்டமன்றம் மற்றும் தேர்தல்கள்" },
+            { name: "திரு கே.என். நேரு", portfolio: "நகராட்சி நிர்வாகம், நகர்ப்புறம் மற்றும் குடிநீர் வழங்கல்" },
+            { name: "திரு ஐ. பெரியசாமி", portfolio: "ஊரக வளர்ச்சி, ஊராட்சிகள் மற்றும் ஊராட்சி ஒன்றியம்" },
+            { name: "திரு எ.வ. வேலு", portfolio: "பொதுப்பணி (கட்டடங்கள்), நெடுஞ்சாலைகள் மற்றும் சிறு துறைமுகங்கள்" },
+            { name: "திரு எம்.ஆர்.கே. பன்னீர்செல்வம்", portfolio: "வேளாண்மை மற்றும் உழவர் நலன்" },
+            { name: "திரு கே.கே.எஸ்.எஸ்.ஆர். ராமச்சந்திரன்", portfolio: "வருவாய் மற்றும் பேரிடர் மேலாண்மை" },
+            { name: "திரு தங்கம் தென்னரசு", portfolio: "நிதி, சுற்றுச்சூழல் & பருவநிலை மாற்றம், மற்றும் தொல்லியல்" },
+            { name: "திரு எஸ். ரகுபதி", portfolio: "சட்டம், நீதிமன்றங்கள் மற்றும் சிறைச்சாலைகள்" },
+            { name: "திரு சிவ வி. மெய்யநாதன்", portfolio: "பிற்படுத்தப்பட்டோர் நலன்" },
+            { name: "திரு பி.கே. சேகர்பாபு", portfolio: "இந்து சமயம் மற்றும் அறநிலையங்கள், சிஎம்டிஏ" },
+            { name: "திரு மா. சுப்பிரமணியன்", portfolio: "சுகாதாரம், மருத்துவக் கல்வி மற்றும் குடும்ப நலன்" },
+            { name: "திரு அன்பில் மகேஷ் பொய்யாமொழி", portfolio: "பள்ளி கல்வி" },
+            { name: "திரு ஆர். சக்கரபாணி", portfolio: "உணவு மற்றும் நுகர்பொருள் வழங்கல், நுகர்வோர் பாதுகாப்பு" },
+            { name: "திரு எஸ்.எஸ். சிவசங்கர்", portfolio: "போக்குவரத்து" },
+            { name: "டாக்டர் டி.ஆர்.பி. ராஜா", portfolio: "தொழில்கள்" },
+            { name: "திரு டி. மனோ தங்கராஜ்", portfolio: "பால் வளம் மற்றும் பால் பண்ணை மேம்பாடு" },
+            { name: "திரு மு.பெ. சாமிநாதன்", portfolio: "செய்தி மற்றும் விளம்பரம், திரைப்பட தொழில்நுட்பம்" },
+            { name: "திருமதி. பி. கீதா ஜீவன்", portfolio: "சமூக நலம் மற்றும் மகளிர் உரிமை" },
+            { name: "திருமதி. என். கயல்விழி செல்வராஜ்", portfolio: "ஆதி திராவிடர் நலன்" },
+            { name: "திரு ஆர்.எஸ். ராஜகண்ணப்பன்", portfolio: "காதர் மற்றும் கிராமத் தொழில்கள்" },
+            { name: "திரு செஞ்சி கே.எஸ். மஸ்தான்", portfolio: "சிறுபான்மையினர் நலன் மற்றும் வெளிநாடு வாழ் தமிழர் நலன்" },
+            { name: "திரு வி. செந்தில்பாலாஜி", portfolio: "மின்சாரம், மதுவிலக்கு மற்றும் ஆயத்தீர்வை" },
+            { name: "திரு கே. ராமச்சந்திரன்", portfolio: "சுற்றுலா" },
+            { name: "திரு ஆர். காந்தி", portfolio: "கைத்தறி மற்றும் துணிநூல்" },
+            { name: "திரு பி. மூர்த்தி", portfolio: "வணிக வரிகள் மற்றும் பதிவு" },
+            { name: "திரு பழனிவேல் தியாக ராஜன்", portfolio: "தகவல் தொழில்நுட்பம் மற்றும் டிஜிட்டல் சேவைகள்" },
+            { name: "திரு எஸ். முத்துசாமி", portfolio: "வீட்டுவசதி மற்றும் நகர்ப்புற வளர்ச்சி" },
+            { name: "திரு ஜி.வி. மார்க்கண்டேயன்", portfolio: "கைவினைப்பொருட்கள் மற்றும் கதர்" },
+            { name: "டாக்டர் மு. மதிவேந்தன்", portfolio: "வனத்துறை" },
+            { name: "திரு அனிதா ஆர். ராதாகிருஷ்ணன்", portfolio: "மீன்வளம் மற்றும் மீனவர் நலன்" },
+            { name: "திரு தா.மோ. அன்பரசன்", portfolio: "சிறு, குறு மற்றும் நடுத்தர தொழில்கள் (MSME)" },
+            { name: "திரு கு. பிச்சாண்டி", portfolio: "துணை சபாநாயகர்" }
+        ];
+
+        // Safe check for minister count element
+        const countEl = document.getElementById('minister-count');
+        if (countEl) countEl.textContent = ministersList_EN.length;
+
+        function getLogoForPortfolio(portfolio) {
+            const p = portfolio.toLowerCase();
+            if (p.includes("chief") || p.includes("home")) return "crown";
+            if (p.includes("education")) return "book-open";
+            if (p.includes("health") || p.includes("medical")) return "heart-pulse";
+            if (p.includes("agriculture") || p.includes("farmers") || p.includes("உழவர்")) return "sprout";
+            if (p.includes("finance") || p.includes("நிதி")) return "landmark";
+            if (p.includes("transport") || p.includes("போக்குவரத்து")) return "bus";
+            if (p.includes("industries") || p.includes("தொழில்கள்")) return "factory";
+            if (p.includes("food") || p.includes("உணவு")) return "shopping-bag";
+            if (p.includes("water") || p.includes("நீர்")) return "droplet";
+            if (p.includes("tourism") || p.includes("சுற்றுலா")) return "compass";
+            if (p.includes("police") || p.includes("காவல்")) return "shield-check";
+            if (p.includes("law") || p.includes("சட்டம்")) return "scale";
+            if (p.includes("it") || p.includes("digital") || p.includes("தகவல் தொழில்நுட்பம்")) return "cpu";
+            if (p.includes("environment") || p.includes("forest") || p.includes("வனத்துறை")) return "trees";
+            if (p.includes("handloom") || p.includes("textile") || p.includes("துணிநூல்")) return "scissors";
+            if (p.includes("welfare") || p.includes("நலன்")) return "users";
+            return "briefcase";
+        }
+
+        const ministersGrid = document.getElementById('ministers-grid');
+
+        function renderMinisters(list) {
+            ministersGrid.innerHTML = '';
+            list.forEach(min => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border border-stone-100 p-5 rounded-xl hover:border-emerald-100 transition-colors flex items-start space-x-4 group';
+
+                const isChief = min.name.includes("Stalin") || min.name.includes("ஸ்டாலின்");
+                const iconName = getLogoForPortfolio(min.portfolio);
+
+                card.innerHTML = `
+                    <div class="p-2.5 bg-emerald-50 text-emerald-700 rounded-lg group-hover:bg-emerald-900 group-hover:text-amber-300 transition-colors flex-shrink-0">
+                        <i data-lucide="${iconName}" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex items-center justify-between mb-0.5">
+                            <h3 class="text-sm font-semibold text-emerald-950 group-hover:text-emerald-700 transition-colors">${min.name}</h3>
+                            ${isChief ? `<span class="text-[9px] text-amber-700 bg-amber-50 font-bold px-1.5 py-0.5 rounded-full border border-amber-200">Leadership</span>` : ''}
+                        </div>
+                        <p class="text-xs text-stone-500 font-light leading-snug">${min.portfolio}</p>
+                    </div>
+                `;
+                ministersGrid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        renderMinisters(ministersList_EN);
+
+        // Safe Language Switcher Logic
+        const langSwitcher = document.getElementById('lang-switcher');
+        if (langSwitcher) {
+            langSwitcher.addEventListener('change', (e) => {
+                const selectedLang = e.target.value;
+
+                document.querySelectorAll('[data-translate]').forEach(element => {
+                    const key = element.getAttribute('data-translate');
+                    if (translations[selectedLang] && translations[selectedLang][key]) {
+                        element.textContent = translations[selectedLang][key];
+                    }
+                });
+
+                if (selectedLang === 'ta') {
+                    renderMinisters(ministersList_TA);
+                } else {
+                    renderMinisters(ministersList_EN);
+                }
+            });
+        }
+
+        // --- MODAL TOGGLE CODE ---
+        const closeBtn = document.getElementById('close-modal-btn');
+        const modal = document.getElementById('ministers-modal');
+
+        // Find by ID first, then fallback to looking for the text "View All"
+        let openBtn = document.getElementById('toggle-ministers-btn');
+
+        if (!openBtn) {
+            const buttons = document.getElementsByTagName('button');
+            for (let btn of buttons) {
+                if (btn.textContent.trim().includes("View All")) {
+                    openBtn = btn;
+                    break;
+                }
+            }
+        }
+
+        if (openBtn && modal) {
+            openBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Stop background scrolling
+            });
+        }
+
+        if (closeBtn && modal) {
+            closeBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            });
+        }
+
+        // Close when clicking outside the box
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

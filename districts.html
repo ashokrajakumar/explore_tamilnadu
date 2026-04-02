@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Tamil Nadu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Ambient Orbs */
+        @keyframes float-slow {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-30px) scale(1.05);
+            }
+        }
+
+        @keyframes float-medium {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-20px) translateX(20px) scale(1.1);
+            }
+        }
+
+        .orb-1 {
+            animation: float-slow 12s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            animation: float-medium 15s ease-in-out infinite reverse;
+        }
+
+        /* Staggered Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Progress loader */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-[#FCFAF6] text-stone-800 transition-colors duration-300 dark:bg-[#121412] dark:text-stone-200 antialiased overflow-x-hidden relative">
+
+    <div id="progress-bar"></div>
+
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div
+            class="orb-1 absolute top-[20%] left-[10%] w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen">
+        </div>
+        <div
+            class="orb-2 absolute top-[60%] right-[5%] w-[30rem] h-[30rem] bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen">
+        </div>
+    </div>
+
+    <nav class="fixed top-0 inset-x-0 bg-transparent text-white z-50 transition-all duration-300" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <a href="index.html" class="flex items-center group">
+                <div
+                    class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:bg-white/40 transition-colors">
+                    <i data-lucide="arrow-left" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="ml-3 font-semibold tracking-wide drop-shadow-md">Back to Explore</span>
+            </a>
+            <div id="loading-badge"
+                class="px-4 py-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full text-sm font-medium animate-pulse flex items-center">
+                <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Syncing Wikipedia...
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-[50vh] w-full flex items-center justify-center overflow-hidden bg-stone-900">
+        <div id="hero-bg" class="absolute inset-0 w-full h-full parallax object-cover opacity-30 bg-stone-700"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-stone-900/60 to-[#FCFAF6] dark:to-[#121412]"></div>
+
+        <div class="relative z-10 text-center px-4 reveal mt-12 max-w-4xl mx-auto">
+            <p id="sub-header" class="text-amber-400 font-bold tracking-[0.3em] uppercase text-sm mb-2 drop-shadow-lg">
+                Destination</p>
+            <h1 id="page-title"
+                class="text-5xl md:text-6xl font-serif text-emerald-950 dark:text-emerald-50 drop-shadow-2xl">Visual
+                Archive</h1>
+            <div class="w-16 h-1 bg-gradient-to-r from-amber-400 to-emerald-500 mt-4 mx-auto"></div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 space-y-24">
+
+        <section class="reveal max-w-5xl mx-auto mb-16">
+            <div id="history-content"
+                class="text-lg md:text-xl text-stone-600 dark:text-stone-300 leading-[2.2] font-serif text-justify">
+                <div class="animate-pulse flex flex-col space-y-4">
+                    <div class="h-4 bg-stone-200 dark:bg-stone-800 rounded w-full"></div>
+                    <div class="h-4 bg-stone-200 dark:bg-stone-800 rounded w-5/6"></div>
+                    <div class="h-4 bg-stone-200 dark:bg-stone-800 rounded w-4/6"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="image-grid">
+            </div>
+        </section>
+
+    </main>
+
+    <footer
+        class="border-t border-stone-200 dark:border-stone-800 py-10 text-center text-sm text-stone-500 font-medium">
+        Powered by Wikipedia Open Knowledge APIs &bull; Live Fetched Content
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Check Dark Mode
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Navbar & Progress Bar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                nav.classList.remove('py-5');
+            } else {
+                nav.classList.remove('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                nav.classList.add('py-5');
+            }
+        });
+
+        // Intersection Observer for Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Grabbing the destination dynamic parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let rawName = urlParams.get('name') || 'Tamil Nadu';
+        const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+        // Update Title to match searched location directly instead of saying "Visual Heritage"
+        document.getElementById('page-title').innerText = cleanName;
+
+        // Wikipedia Master Endpoint Fetch (Text and Gallery Images)
+        async function fetchWikipediaData(title) {
+            const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|images|pageimages&exintro=1&explaintext=1&titles=${encodeURIComponent(title)}&pithumbsize=1000&origin=*`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const pages = data.query?.pages;
+                if (!pages) return null;
+                const pageId = Object.keys(pages)[0];
+                if (pageId === "-1") return null;
+                return pages[pageId];
+            } catch (e) {
+                console.error("Fetch error", e);
+                return null;
+            }
+        }
+
+        // Wikipedia Image Thumbnail Endpoint
+        async function fetchImageThumb(imageTitle) {
+            const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&titles=${encodeURIComponent(imageTitle)}&origin=*`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const pages = data.query?.pages;
+                if (!pages) return null;
+                const pageId = Object.keys(pages)[0];
+                return pages[pageId]?.imageinfo?.[0]?.url || null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function orchestrate() {
+            const loader = document.getElementById('loading-badge');
+            const grid = document.getElementById('image-grid');
+            const historyDiv = document.getElementById('history-content');
+
+            // Fetch Main Page Payload
+            const data = await fetchWikipediaData(cleanName);
+
+            if (data) {
+                // 1. Insert True Wikipedia Article Text
+                let extractText = data.extract || "No description was found on Wikipedia for this destination.";
+                historyDiv.innerHTML = `<p>${extractText}</p>`;
+
+                // 2. Insert True Thumbnail into Hero Background (if exists)
+                if (data.thumbnail && data.thumbnail.source) {
+                    document.getElementById('hero-bg').style.backgroundImage = `url('${data.thumbnail.source}')`;
+                }
+
+                // 3. Populate Gallery solely with referenced files tied directly to this page
+                const images = data.images;
+                if (images && images.length > 0) {
+                    // Filter down to get up to 6 valid photographic files (ignoring icons, SVGs)
+                    const filteredImages = images.filter(img =>
+                        img.title.toLowerCase().endsWith('.jpg') ||
+                        img.title.toLowerCase().endsWith('.png') ||
+                        img.title.toLowerCase().endsWith('.jpeg')
+                    ).slice(0, 6);
+
+                    grid.innerHTML = ""; // Clear pure grid space
+
+                    for (let i = 0; i < filteredImages.length; i++) {
+                        const imgTitle = filteredImages[i].title;
+                        const imgUrl = await fetchImageThumb(imgTitle);
+
+                        if (imgUrl) {
+                            // Extract clean name from Title string
+                            const cleanImgName = imgTitle.replace("File:", "").split(".")[0].replace(/_/g, " ");
+
+                            // Build the template without hardcoded placeholders
+                            const card = document.createElement('div');
+                            card.className = "group relative bg-white dark:bg-[#1E221E] rounded-3xl border border-stone-100 dark:border-stone-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between min-h-[400px]";
+
+                            card.innerHTML = `
+                                <div class="h-64 w-full bg-cover bg-center" style="background-image: url('${imgUrl}');"></div>
+                                <div class="p-8 flex-grow flex flex-col justify-between">
+                                    <div>
+                                        <span class="font-mono text-emerald-500 text-sm font-bold tracking-wider">0${i + 1} / ARCHIVE</span>
+                                        <h3 class="text-xl font-serif font-bold text-emerald-950 dark:text-emerald-50 mt-4 mb-3 capitalize">${cleanImgName}</h3>
+                                        <p class="text-stone-600 dark:text-stone-400 leading-relaxed text-sm">Archived photographic record matching historical collections recorded for ${cleanName} on the open knowledge database.</p>
+                                    </div>
+                                    <div class="border-t border-stone-100 dark:border-stone-800 pt-4 mt-6">
+                                        <a href="https://commons.wikimedia.org/wiki/${encodeURIComponent(imgTitle)}" target="_blank" class="text-emerald-600 dark:text-emerald-400 text-sm font-medium hover:underline flex items-center">
+                                            View Source Asset <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `;
+                            grid.appendChild(card);
+                        }
+                    }
+                } else {
+                    grid.innerHTML = `<div class="col-span-3 text-center text-stone-500">No media library available for this entry.</div>`;
+                }
+            } else {
+                historyDiv.innerHTML = `<p>Wikipedia record not found for "${cleanName}".</p>`;
+            }
+
+            // Remove visual loader
+            if (loader) {
+                loader.style.transition = 'opacity 0.5s ease';
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+            }
+            lucide.createIcons();
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+        }
+
+        orchestrate();
+    </script>
+</body>
+
+</html>

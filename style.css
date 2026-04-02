@@ -1,0 +1,41 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* NAVBAR */
+.custom-navbar {
+    background: linear-gradient(45deg, #1e3c72, #2a5298);
+}
+
+/* HERO */
+.hero-section {
+    background: url('https://upload.wikimedia.org/wikipedia/commons/0/0c/India_Gate_in_New_Delhi_03-2016.jpg') center/cover no-repeat;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+/* CARDS */
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.state-card {
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+.state-card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+.state-card:hover {
+    transform: scale(1.05);
+}
+
+/* FOOTER */
+.custom-footer {
+    background: #1e3c72;
+}
