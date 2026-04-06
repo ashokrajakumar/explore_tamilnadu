@@ -18,6 +18,26 @@ const ThemeManager = (() => {
         // 2. Setup Listeners
         setupToggleListeners();
         updateIcons();
+        checkVibe();
+    };
+
+    const checkVibe = () => {
+        const hour = new Date().getHours();
+        const body = document.documentElement;
+
+        // Reset vibes
+        body.classList.remove('vibe-dawn', 'vibe-golden', 'vibe-midnight');
+
+        if (hour >= 4 && hour < 8) {
+            body.classList.add('vibe-dawn');
+            console.log("Welcome to Dawn Vibe 🌅");
+        } else if (hour >= 16 && hour < 20) {
+            body.classList.add('vibe-golden');
+            console.log("Welcome to Golden Hour 🍯");
+        } else if (hour >= 20 || hour < 4) {
+            body.classList.add('vibe-midnight');
+            console.log("Welcome to Midnight Vibe 🌌");
+        }
     };
 
     const toggleTheme = () => {

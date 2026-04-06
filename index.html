@@ -106,6 +106,64 @@
             width: 2px;
             background: linear-gradient(to bottom, #10b981 0%, transparent 100%);
         }
+
+        /* Interactive Map Styles */
+        #map-tooltip {
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 9999;
+        }
+        
+        svg path:hover {
+            fill: #10b981 !important;
+            stroke: #34d399 !important;
+            stroke-width: 3px;
+            transform: scale(1.02);
+            transform-origin: center;
+        }
+
+        .map-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Timeline Styles */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, #10b981 10%, #10b981 90%, transparent);
+        }
+        @media (max-width: 768px) {
+            .timeline-line { left: 32px; transform: none; }
+        }
+
+        /* Dynamic Vibe Themes */
+        .vibe-dawn {
+            --tw-bg-opacity: 1;
+            background-color: #FFF5F7 !important;
+        }
+        .dark .vibe-dawn { background-color: #1a1518 !important; }
+        .vibe-dawn .text-emerald-600 { color: #f472b6 !important; }
+
+        .vibe-golden {
+            background-color: #FFFDF0 !important;
+        }
+        .dark .vibe-golden { background-color: #1a1914 !important; }
+        .vibe-golden .text-emerald-600 { color: #fbbf24 !important; }
+
+        .vibe-midnight {
+            background-color: #F8FAFC !important;
+        }
+        .dark .vibe-midnight { background-color: #0F172A !important; }
+        .vibe-midnight .text-emerald-600 { color: #818CF8 !important; }
+
+        .vibe-midnight .bg-emerald-600 { background-color: #4F46E5 !important; }
+        .vibe-midnight .border-emerald-500\/20 { border-color: rgba(99, 102, 241, 0.2) !important; }
     </style>
 </head>
 
@@ -550,16 +608,114 @@
 
         </div>
 
-        <section class="mb-20 overflow-hidden">
-            <div class="text-center mb-10">
-                <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Explore</span>
-                <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50">
-                    Tamil Nadu Districts
-                </h2>
+        <!-- ===== INTERACTIVE DISTRICT MAP (Premium Feature) ===== -->
+        <section class="mb-32 relative">
+            <div class="text-center mb-16">
+                <span class="text-xs uppercase tracking-widest text-emerald-600 font-bold block mb-2">Visual Explorer</span>
+                <h2 class="text-5xl font-serif font-bold text-emerald-950 dark:text-emerald-50">Interactive Heritage Map</h2>
+                <p class="text-stone-500 dark:text-stone-400 text-sm mt-4 max-w-2xl mx-auto font-light">Hover over any district to preview its legacy and click to dive deep into its culture, landmarks, and soul.</p>
             </div>
 
-            <div class="relative w-full overflow-hidden">
-                <div id="district-train" class="flex gap-6 w-max animate-scroll">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left: The Map -->
+                <div class="lg:col-span-7 relative group">
+                    <div class="map-glass rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+                        <div id="interactive-map-container" class="relative z-10">
+                            <!-- SVG Map will be injected here by map_controller.js -->
+                        </div>
+                    </div>
+                    <!-- Tooltip Container -->
+                    <div id="map-tooltip" class="fixed hidden bg-transparent"></div>
+                </div>
+
+                <!-- Right: District Info & Quick Links -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="bg-white dark:bg-[#1A1D1A] rounded-[2.5rem] p-8 border border-stone-100 dark:border-stone-800 shadow-xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center">
+                                <i data-lucide="info" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-emerald-950 dark:text-emerald-50">State of Legacy</h3>
+                        </div>
+                        <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed mb-8">
+                            With 38 districts spanning from the misty Western Ghats to the vast Bay of Bengal, Tamil Nadu is India's cultural epicenter. Use the map to navigate through its ancient geography.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-5 bg-emerald-600/5 rounded-2xl border border-emerald-500/10 group hover:bg-emerald-600 transition-all duration-300">
+                                <p class="text-[10px] uppercase font-bold text-stone-400 group-hover:text-emerald-200 mb-1">Coastline</p>
+                                <p class="text-xl font-serif font-bold text-emerald-950 dark:text-emerald-50 group-hover:text-white">1,076 KM</p>
+                            </div>
+                            <div class="p-5 bg-amber-600/5 rounded-2xl border border-amber-500/10 group hover:bg-amber-600 transition-all duration-300">
+                                <p class="text-[10px] uppercase font-bold text-stone-400 group-hover:text-amber-200 mb-1">Districts</p>
+                                <p class="text-xl font-serif font-bold text-emerald-950 dark:text-emerald-50 group-hover:text-white">38 Total</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
+                        <div class="absolute bottom-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl translate-x-1/2 translate-y-1/2"></div>
+                        <h4 class="text-lg font-serif font-bold mb-3">Plan Your Route?</h4>
+                        <p class="text-sm text-emerald-100/70 font-light mb-6">Let our AI help you choreograph the perfect journey based on your selected districts.</p>
+                        <a href="chat.html" class="inline-flex items-center bg-white text-emerald-900 text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-2xl hover:bg-emerald-50 transition-all">Chat with Scout <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== HERITAGE TIMELINE (Premium Feature) ===== -->
+        <section class="mb-40 relative px-4 md:px-0">
+            <div class="text-center mb-24">
+                <span class="text-xs uppercase tracking-[0.4em] text-emerald-600 font-bold block mb-3">The Sands of Time</span>
+                <h2 class="text-5xl font-serif font-bold text-emerald-950 dark:text-emerald-50">Symphony of Eras</h2>
+            </div>
+            
+            <div class="relative">
+                <div class="timeline-line hidden md:block"></div>
+                
+                <div class="space-y-32">
+                    <!-- Era 1: Sangam Age -->
+                    <div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+                        <div class="md:text-right order-2 md:order-1">
+                            <h3 class="text-3xl font-serif font-bold text-emerald-900 dark:text-emerald-50 mb-4">Sangam Age</h3>
+                            <p class="text-stone-500 dark:text-stone-400 font-light leading-relaxed">The dawn of Tamil civilization. A golden era of classical poetry, trade with Rome, and the birth of a language that still breathes today.</p>
+                        </div>
+                        <div class="relative order-1 md:order-2 flex justify-start md:justify-center">
+                            <div class="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-xl z-10 border-4 border-[#FCFAF6] dark:border-[#121412]">
+                                <i data-lucide="feather" class="w-7 h-7"></i>
+                            </div>
+                            <span class="absolute top-1/2 left-24 md:left-auto md:right-1/2 md:translate-x-[-120%] -translate-y-1/2 text-[10px] font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full">300 BC — 300 AD</span>
+                        </div>
+                    </div>
+
+                    <!-- Era 2: Imperial Cholas -->
+                    <div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+                        <div class="md:ml-24 flex justify-end md:justify-center relative">
+                            <div class="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center shadow-xl z-10 border-4 border-[#FCFAF6] dark:border-[#121412]">
+                                <i data-lucide="landmark" class="w-7 h-7"></i>
+                            </div>
+                            <span class="absolute top-1/2 right-24 md:right-auto md:left-1/2 md:translate-x-[120%] -translate-y-1/2 text-[10px] font-bold text-amber-600 uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full">9th — 13th Century</span>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-serif font-bold text-amber-900 dark:text-amber-50 mb-4">The Imperial Cholas</h3>
+                            <p class="text-stone-500 dark:text-stone-400 font-light leading-relaxed">Titan of the East. Builders of the 'Great Living Chola Temples' and masters of a naval empire that stretched across Southeast Asia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Era 3: Modern Tamil Nadu -->
+                    <div class="relative grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+                        <div class="md:text-right order-2 md:order-1">
+                            <h3 class="text-3xl font-serif font-bold text-sky-900 dark:text-sky-50 mb-4">The Modern Surge</h3>
+                            <p class="text-stone-500 dark:text-stone-400 font-light leading-relaxed">The Detroit of South Asia. A pioneer in education, aerospace, and culture, blending ancient values with futuristic innovation.</p>
+                        </div>
+                        <div class="relative order-1 md:order-2 flex justify-start md:justify-center">
+                            <div class="w-16 h-16 bg-sky-600 text-white rounded-full flex items-center justify-center shadow-xl z-10 border-4 border-[#FCFAF6] dark:border-[#121412]">
+                                <i data-lucide="zap" class="w-7 h-7"></i>
+                            </div>
+                            <span class="absolute top-1/2 left-24 md:left-auto md:right-1/2 md:translate-x-[-120%] -translate-y-1/2 text-[10px] font-bold text-sky-600 uppercase tracking-widest bg-sky-50 px-3 py-1 rounded-full">Today</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

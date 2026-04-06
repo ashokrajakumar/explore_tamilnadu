@@ -49,7 +49,17 @@ const ExploreBot = (() => {
                 genAI = new GoogleGenerativeAI(CONFIG.API_KEY);
                 model = genAI.getGenerativeModel({ 
                     model: CONFIG.MODEL,
-                    systemInstruction: "You are the 'Explore Bot', a friendly, professional AI travel assistant for Tamil Nadu, India. You provide concise, charming, and accurate travel advice. Use emojis like 🙏 and ✨. Focus on Tamil Nadu's culture, food, temples, and history. If asked a non-travel question, politely steer the conversation back to exploring Tamil Nadu."
+                    systemInstruction: `You are the 'Explore Bot', a friendly, professional AI travel assistant for Tamil Nadu, India.
+                    
+                    CUISINE CONCIERGE MODE:
+                    If the user asks about food, dishes, or where to eat, always provide a rich, detailed response. 
+                    Structure your response to include: 
+                    1. The name of the dish/specialty.
+                    2. The region it's famous for.
+                    3. A brief 'vibe' description (e.g., 'Spicy & Heroic', 'Cool & Refreshing').
+                    
+                    Use emojis like 🙏 and ✨. Focus on Tamil Nadu's culture, food, temples, and history. 
+                    If asked a non-travel question, politely steer the conversation back to exploring Tamil Nadu.`
                 });
                 console.log("AI Agent Initialized 🚀");
                 return true;
@@ -154,6 +164,44 @@ const ExploreBot = (() => {
         if (window.lucide) lucide.createIcons();
     }
 
+    function addCuisineCard(data) {
+        if (!ui.chatMessages) return;
+        const cardDiv = document.createElement('div');
+        cardDiv.className = "flex gap-3 mb-6 animate-fade-in";
+        
+        cardDiv.innerHTML = `
+            <div class="flex-shrink-0 w-10"></div>
+            <div class="max-w-[85%] w-full">
+                <div class="bg-gradient-to-br from-emerald-900 to-teal-950 rounded-[2rem] overflow-hidden shadow-xl border border-white/10">
+                    <div class="h-32 bg-cover bg-center relative" style="background-image: url('${data.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80'}')">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[8px] font-bold text-white uppercase tracking-widest">${data.category || 'Local Specialty'}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-serif font-bold text-white mb-1">${data.name}</h4>
+                        <p class="text-xs text-emerald-300 font-medium mb-4 flex items-center gap-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i> ${data.region}
+                        </p>
+                        <p class="text-sm text-emerald-100/70 leading-relaxed mb-6">${data.desc}</p>
+                        <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                            <div class="flex -space-x-2">
+                                <div class="w-6 h-6 rounded-full border-2 border-emerald-900 bg-emerald-100 flex items-center justify-center text-[8px] font-bold text-emerald-900">🌶️</div>
+                                <div class="w-6 h-6 rounded-full border-2 border-emerald-900 bg-emerald-100 flex items-center justify-center text-[8px] font-bold text-emerald-900">⭐</div>
+                            </div>
+                            <button onclick="ExploreBot.addMessage('Tell me more about ${data.name}', true); ExploreBot.handleAIResponse('Tell me more about ${data.name}')" class="text-[10px] font-bold text-white uppercase tracking-wider hover:text-emerald-400 transition-colors">Analyze Flavors →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        ui.chatMessages.appendChild(cardDiv);
+        ui.chatMessages.scrollTo({ top: ui.chatMessages.scrollHeight, behavior: 'smooth' });
+        if (window.lucide) lucide.createIcons();
+    }
+
 
     async function handleAIResponse(userVal) {
         const val = userVal.toLowerCase();
@@ -220,6 +268,28 @@ const ExploreBot = (() => {
 
         setTimeout(() => {
             showTyping(false);
+            
+            // Check if we should show a Cuisine Card (Heuristic-based for this demo, usually AI would trigger this)
+            const foodKeywords = ['biryani', 'dosa', 'idli', 'coffee', 'halwa', 'pongal', 'meals'];
+            const foundFood = foodKeywords.find(f => val.includes(f));
+            
+            if (foundFood) {
+                // Generate a card for the found food
+                const foodData = {
+                    biryani: { name: "Thalappakatti Biryani", region: "Dindigul", desc: "Aromatic Seeraga Samba rice cooked with succulent meat and secret mountain spices.", category: "Legendary Main", image: "https://images.unsplash.com/photo-1563379091339-03b21ef4a4f8?auto=format&fit=crop&w=400&q=80" },
+                    dosa: { name: "Podi Dose", region: "Madurai / Chennai", desc: "Crispy fermented crepe smeared with 'Gunpowder' spice mix and pure ghee.", category: "Street Soul", image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=400&q=80" },
+                    coffee: { name: "Degree Filter Coffee", region: "Kumbakonam", desc: "Pure brass-filtered decoction with foamy, thick milk. The soul of Tamil mornings.", category: "Liquid Gold", image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80" },
+                    halwa: { name: "Iruttu Kadai Halwa", region: "Tirunelveli", desc: "Wheat-based glossy sweet that melts at room temperature. Famous for its secret recipe.", category: "Classic Sweet", image: "https://images.unsplash.com/photo-1589119634773-8408d0391238?auto=format&fit=crop&w=400&q=80" }
+                };
+                
+                if (foodData[foundFood]) {
+                    addCuisineCard(foodData[foundFood]);
+                    // Also add a text response
+                    addMessage(`Excellent choice! **${foodData[foundFood].name}** is a masterpiece of Tamil cuisine. Here's a quick look at why it's so special:`);
+                    return;
+                }
+            }
+
             addMessage(response);
         }, 800 + Math.random() * 1000);
     }
