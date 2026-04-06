@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Travel Assistant | Explore Tamil Nadu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-50 text-stone-800 transition-colors duration-300 dark:bg-[#121412] dark:text-stone-200">
+
+    <div class="max-w-5xl mx-auto h-screen flex flex-col p-4 md:p-8">
+        <!-- Header -->
+        <header class="flex items-center justify-between mb-8">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-stone-800 border border-stone-100 dark:border-stone-700 hover:text-emerald-600 transition-colors shadow-sm">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+                <div>
+                    <h1 class="text-2xl font-serif font-bold text-emerald-950 dark:text-emerald-50">AI Travel Assistant</h1>
+                    <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-widest">Tamil Nadu Guide</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-stone-800 border border-stone-100 dark:border-stone-700 text-stone-500 hover:text-emerald-600 transition-colors shadow-sm">
+                    <i data-lucide="sun" class="w-5 h-5 hidden" id="sun-icon"></i>
+                    <i data-lucide="moon" class="w-5 h-5" id="moon-icon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="flex-grow flex flex-col bg-white dark:bg-stone-900 rounded-3xl border border-stone-100 dark:border-stone-800 shadow-xl overflow-hidden mb-8">
+            <!-- Messages -->
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-6 md:p-10 space-y-6 custom-scrollbar scroll-smooth">
+                <!-- Messages will be injected here -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="hidden px-10 pb-4">
+                <div class="flex items-center space-x-2 text-[10px] text-emerald-600 font-bold uppercase tracking-widest">
+                    <div class="flex space-x-1">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce"></span>
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                    </div>
+                    <span>Assistant is thinking...</span>
+                </div>
+            </div>
+
+            <!-- Input Form -->
+            <div class="p-6 md:p-8 bg-stone-50 dark:bg-stone-950 border-t border-stone-100 dark:border-stone-800">
+                <form id="chat-form" class="relative group">
+                    <input type="text" id="chat-input" placeholder="Ask about places, food, or distances in TN..." 
+                           class="w-full bg-white dark:bg-stone-800 border-2 border-stone-100 dark:border-stone-700 rounded-2xl px-6 py-5 text-sm transition-all focus:outline-none focus:border-emerald-500 shadow-sm">
+                    <button type="submit" class="absolute right-2 top-2 bottom-2 px-6 bg-emerald-700 text-white rounded-xl hover:bg-emerald-600 transition-all shadow-md">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </button>
+                </form>
+                <div class="mt-4 flex justify-center space-x-4">
+                    <button onclick="quickPrompt('Top 5 places in Madurai')" class="text-[10px] font-bold text-stone-400 hover:text-emerald-600 transition-colors uppercase tracking-widest">Madurai</button>
+                    <button onclick="quickPrompt('Famous food in Thanjavur')" class="text-[10px] font-bold text-stone-400 hover:text-emerald-600 transition-colors uppercase tracking-widest">Food</button>
+                    <button onclick="quickPrompt('Best time to visit Ooty')" class="text-[10px] font-bold text-stone-400 hover:text-emerald-600 transition-colors uppercase tracking-widest">Seasons</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="theme_manager.js"></script>
+    <script>
+        function quickPrompt(text) {
+            const input = document.getElementById('chat-input');
+            input.value = text;
+            document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+        }
+
+        // Handle Theme Toggle properly with ThemeManager
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const themeBtn = document.getElementById('theme-toggle');
+
+        themeBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+
+        // Sync icons on load
+        if (document.documentElement.classList.contains('dark')) {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        }
+
+        // Context handle
+        const urlParams = new URLSearchParams(window.location.search);
+        const context = urlParams.get('context');
+        if (context) {
+            window.cleanName = context;
+        }
+
+        lucide.createIcons();
+    </script>
+    <script type="module" src="explore_bot.js"></script>
+</body>
+
+</html>

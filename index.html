@@ -15,6 +15,13 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -60,6 +67,44 @@
 
         #district-train:hover .animate-scroll {
             animation-play-state: paused;
+        }
+
+        /* Hide scrollbar for cuisine scroll */
+        #cuisine-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Smart Journey Concierge Styles */
+        .concierge-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .dark .concierge-glass {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .step-active {
+            background: #10b981 !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal {
+            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .blueprint-line {
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #10b981 0%, transparent 100%);
         }
     </style>
 </head>
@@ -221,10 +266,11 @@
                     </div>
                 </div>
             </nav>
-            <div class="hidden md:flex items-center space-x-4 relative">
+            <!-- Desktop Actions -->
+            <div class="hidden md:flex items-center space-x-3 relative">
                 <div class="relative">
                     <input type="text" id="header-search-loc" autocomplete="off" placeholder="Search ..."
-                        class="w-64 bg-stone-50 dark:bg-[#1E221E] text-stone-800 dark:text-stone-200 text-sm rounded-lg py-2.5 px-4 pl-10 focus:outline-none focus:ring-1 focus:ring-emerald-400 border border-stone-100 dark:border-stone-800 focus:bg-white dark:focus:bg-[#242924] transition-all">
+                        class="w-56 bg-stone-50 dark:bg-[#1E221E] text-stone-800 dark:text-stone-200 text-sm rounded-lg py-2.5 px-4 pl-10 focus:outline-none focus:ring-1 focus:ring-emerald-400 border border-stone-100 dark:border-stone-800 focus:bg-white dark:focus:bg-[#242924] transition-all">
                     <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
                     <ul id="header-search-suggestions"
                         class="absolute z-50 w-full mt-1 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 rounded-lg shadow-lg hidden max-h-48 overflow-y-auto">
@@ -235,9 +281,91 @@
                     <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
                     <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
                 </button>
+                </button>
+
+            </div>
+            <!-- Mobile Actions -->
+            <div class="flex md:hidden items-center space-x-2">
+
+                <button id="theme-toggle-mob"
+                    class="p-2 bg-stone-50 dark:bg-[#1E221E] border border-stone-100 dark:border-stone-800 rounded-lg text-stone-600 dark:text-stone-400">
+                    <i data-lucide="sun" id="sun-icon-mob" class="w-4 h-4 hidden"></i>
+                    <i data-lucide="moon" id="moon-icon-mob" class="w-4 h-4"></i>
+                </button>
+                <button id="mobile-menu-btn"
+                    class="p-2 bg-stone-50 dark:bg-[#1E221E] border border-stone-100 dark:border-stone-800 rounded-lg text-stone-600 dark:text-stone-400">
+                    <i data-lucide="menu" id="hamburger-icon" class="w-5 h-5"></i>
+                    <i data-lucide="x" id="close-nav-icon" class="w-5 h-5 hidden"></i>
+                </button>
             </div>
         </div>
     </header>
+    <!-- Mobile Navigation Panel -->
+    <div id="mobile-nav-panel"
+        class="hidden md:hidden sticky top-[73px] z-40 bg-white dark:bg-[#1A1D1A] border-b border-stone-100 dark:border-stone-800 shadow-xl px-6 py-6">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold mb-3">
+                    Chennai &amp; North</h4>
+                <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                    <li><a href="districts.html?name=Chennai"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Chennai</a></li>
+                    <li><a href="districts.html?name=Kanchipuram"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Kanchipuram</a></li>
+                    <li><a href="districts.html?name=Vellore"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Vellore</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold mb-3">
+                    The South</h4>
+                <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                    <li><a href="districts.html?name=Madurai"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Madurai</a></li>
+                    <li><a href="districts.html?name=Kanyakumari"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Kanyakumari</a></li>
+                    <li><a href="districts.html?name=Tirunelveli"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Tirunelveli</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold mb-3">
+                    Central &amp; Delta</h4>
+                <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                    <li><a href="districts.html?name=Thanjavur"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Thanjavur</a></li>
+                    <li><a href="districts.html?name=Tiruchirappalli"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Tiruchirappalli</a></li>
+                    <li><a href="districts.html?name=Nagapattinam"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Nagapattinam</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-emerald-700 dark:text-emerald-400 font-bold mb-3">
+                    West &amp; Hills</h4>
+                <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                    <li><a href="districts.html?name=Coimbatore"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Coimbatore</a></li>
+                    <li><a href="districts.html?name=The Nilgiris"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>The Nilgiris</a></li>
+                    <li><a href="districts.html?name=Salem"
+                            class="hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center"><i
+                                data-lucide="map-pin" class="w-3 h-3 mr-2 text-stone-300"></i>Salem</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     <main class="max-w-7xl mx-auto px-6 py-12 lg:py-16">
 
@@ -252,6 +380,89 @@
                 stories and map out your next great journey.
             </p>
         </div>
+
+        <!-- ===== SMART JOURNEY CONCIERGE (Impactful Feature) ===== -->
+        <section class="mb-24 relative z-10 animate-reveal">
+            <div class="concierge-glass rounded-[3.5rem] p-8 md:p-14 shadow-2xl overflow-hidden relative group">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="text-xs uppercase tracking-[0.3em] text-emerald-600 font-bold mb-4 block">Personalized Experience</span>
+                        <h2 class="text-4xl md:text-5xl font-serif font-bold text-emerald-950 dark:text-emerald-50 mb-8 leading-tight">Smart Journey <br>Concierge</h2>
+                        
+                        <div class="space-y-10">
+                            <!-- Step 1: Select Mood -->
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-4">1. Choose your trip soul</p>
+                                <div class="flex flex-wrap gap-3" id="mood-selectors">
+                                    <button onclick="updateConcierge('mood', 'spiritual', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">🕉️ Spiritual</button>
+                                    <button onclick="updateConcierge('mood', 'adventure', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">🏔️ Adventure</button>
+                                    <button onclick="updateConcierge('mood', 'relax', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">🌊 Relax</button>
+                                    <button onclick="updateConcierge('mood', 'urban', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">🏙️ Urban</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Select Duration -->
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-4">2. Select duration</p>
+                                <div class="flex flex-wrap gap-3" id="duration-selectors">
+                                    <button onclick="updateConcierge('duration', '2', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">2 Days</button>
+                                    <button onclick="updateConcierge('duration', '4', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">4 Days</button>
+                                    <button onclick="updateConcierge('duration', '7', this)" class="px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-stone-100 dark:border-stone-800 text-xs font-bold hover:bg-emerald-50 transition-all flex items-center gap-2">1 Week</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 p-6 bg-emerald-600/5 rounded-3xl border border-emerald-500/10 flex items-center gap-5">
+                            <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center">
+                                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-xs font-medium text-stone-600 dark:text-stone-400 leading-relaxed italic">"Aura analysis is active. Select your preferences to reveal your custom-tailored journey blueprint."</p>
+                        </div>
+                    </div>
+
+                    <div class="relative min-h-[500px] flex items-center justify-center">
+                        <!-- Initial Placeholder -->
+                        <div id="planner-placeholder" class="text-center">
+                            <div class="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="compass" class="w-10 h-10 text-emerald-600 animate-spin-slow"></i>
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-emerald-950 dark:text-emerald-50 mb-2">Ready to explore?</h3>
+                            <p class="text-stone-500 text-sm font-light">Select your vibe and time to generate <br>your journey blueprint.</p>
+                        </div>
+
+                        <!-- Result Area -->
+                        <div id="blueprint-area" class="hidden w-full h-full animate-reveal">
+                            <div class="bg-white dark:bg-black/40 rounded-[2.5rem] p-8 shadow-premium border border-white/50 dark:border-white/10 relative overflow-hidden">
+                                <div id="blueprint-id" class="absolute top-4 right-8 text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Blueprint #TN-7542</div>
+                                <h3 id="blueprint-title" class="text-2xl font-serif font-bold text-emerald-950 dark:text-emerald-50 mb-6">Your Eternal Journey</h3>
+                                
+                                <div class="space-y-8 relative" id="blueprint-timeline">
+                                    <div class="blueprint-line"></div>
+                                    <!-- Days will be injected here -->
+                                </div>
+
+                                <div class="mt-10 flex items-center justify-between pt-8 border-t border-stone-100 dark:border-stone-800">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center">
+                                            <i data-lucide="map" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-[8px] uppercase tracking-widest text-stone-400 font-bold">Recommended</p>
+                                            <h5 id="blueprint-district" class="text-sm font-bold text-emerald-950 dark:text-emerald-50">Madurai</h5>
+                                        </div>
+                                    </div>
+                                    <a id="blueprint-link" href="#" class="inline-flex items-center bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-emerald-500 transition-all">Explore District</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-20">
 
@@ -446,6 +657,527 @@
             </div>
         </section>
 
+        <!-- ===== FESTIVALS SECTION ===== -->
+        <section class="mb-20">
+            <div class="text-center mb-12">
+                <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Celebrations</span>
+                <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50" id="festivals-heading">
+                    Festivals of Tamil Nadu</h2>
+                <p class="text-stone-500 dark:text-stone-400 text-sm font-light mt-2 max-w-xl mx-auto"
+                    id="festivals-subtitle">Experience the vibrant spirit of Tamil Nadu through its grandest
+                    celebrations.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+                <div
+                    class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-600"></div>
+                    <div class="relative p-6 text-white flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <div class="text-4xl mb-3">🌾</div>
+                            <h3 class="text-lg font-serif font-bold mb-1 festival-name" data-en="Pongal"
+                                data-ta="பொங்கல்">Pongal</h3>
+                            <span
+                                class="text-[10px] uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-full festival-month"
+                                data-en="January" data-ta="ஜனவரி">January</span>
+                        </div>
+                        <p class="text-xs text-white/80 font-light leading-relaxed mt-3 festival-desc"
+                            data-en="Tamil harvest festival celebrated with sugarcane, rice pots &amp; kolam art."
+                            data-ta="கரும்பு, அரிசி பானைகள் &amp; கோலத்துடன் கொண்டாடப்படும் அறுவடை விழா.">Tamil harvest
+                            festival celebrated with sugarcane, rice pots &amp; kolam art.</p>
+                    </div>
+                </div>
+                <div
+                    class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-rose-700"></div>
+                    <div class="relative p-6 text-white flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <div class="text-4xl mb-3">🪔</div>
+                            <h3 class="text-lg font-serif font-bold mb-1 festival-name" data-en="Karthigai Deepam"
+                                data-ta="கார்த்திகை தீபம்">Karthigai Deepam</h3>
+                            <span
+                                class="text-[10px] uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-full festival-month"
+                                data-en="Nov / Dec" data-ta="நவம்பர் / டிசம்பர்">Nov / Dec</span>
+                        </div>
+                        <p class="text-xs text-white/80 font-light leading-relaxed mt-3 festival-desc"
+                            data-en="Festival of lights with a sacred beacon fire atop Tiruvannamalai hill."
+                            data-ta="திருவண்ணாமலை மலையில் நெய் தீபம் ஏற்றப்படும் விளக்கு திருவிழா.">Festival of lights
+                            with a sacred beacon fire atop Tiruvannamalai hill.</p>
+                    </div>
+                </div>
+                <div
+                    class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-violet-500 to-purple-700"></div>
+                    <div class="relative p-6 text-white flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <div class="text-4xl mb-3">🕉️</div>
+                            <h3 class="text-lg font-serif font-bold mb-1 festival-name" data-en="Navarathri"
+                                data-ta="நவராத்திரி">Navarathri</h3>
+                            <span
+                                class="text-[10px] uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-full festival-month"
+                                data-en="October" data-ta="அக்டோபர்">October</span>
+                        </div>
+                        <p class="text-xs text-white/80 font-light leading-relaxed mt-3 festival-desc"
+                            data-en="Nine nights of Golu doll displays and devotional music honoring Goddess Durga."
+                            data-ta="கொலு பொம்மைகள் மற்றும் பக்தி இசையுடன் கொண்டாடப்படும் ஒன்பது நாள் விழா.">Nine nights
+                            of Golu doll displays and devotional music honoring Goddess Durga.</p>
+                    </div>
+                </div>
+                <div
+                    class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-stone-700 to-stone-900"></div>
+                    <div class="relative p-6 text-white flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <div class="text-4xl mb-3">🐂</div>
+                            <h3 class="text-lg font-serif font-bold mb-1 festival-name" data-en="Jallikattu"
+                                data-ta="ஜல்லிக்கட்டு">Jallikattu</h3>
+                            <span
+                                class="text-[10px] uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-full festival-month"
+                                data-en="January" data-ta="ஜனவரி">January</span>
+                        </div>
+                        <p class="text-xs text-white/80 font-light leading-relaxed mt-3 festival-desc"
+                            data-en="Ancient bull-taming sport practiced during Pongal in Madurai and Trichy regions."
+                            data-ta="மதுரை, திருச்சியில் பொங்கல் வேளையில் நடைபெறும் பண்டைய காளை அடக்கும் விளையாட்டு.">
+                            Ancient bull-taming sport practiced during Pongal in Madurai and Trichy regions.</p>
+                    </div>
+                </div>
+                <div
+                    class="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-teal-500 to-emerald-700"></div>
+                    <div class="relative p-6 text-white flex flex-col justify-between min-h-[210px]">
+                        <div>
+                            <div class="text-4xl mb-3">🙏</div>
+                            <h3 class="text-lg font-serif font-bold mb-1 festival-name" data-en="Thaipusam"
+                                data-ta="தைப்பூசம்">Thaipusam</h3>
+                            <span
+                                class="text-[10px] uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-full festival-month"
+                                data-en="Jan / Feb" data-ta="ஜனவரி / பிப்ரவரி">Jan / Feb</span>
+                        </div>
+                        <p class="text-xs text-white/80 font-light leading-relaxed mt-3 festival-desc"
+                            data-en="Devotional festival with kavadi processions at Murugan temples across Tamil Nadu."
+                            data-ta="தமிழ்நாடு முழுவதும் முருகன் கோயில்களில் கவடி ஊர்வலங்கள் நடைபெறும் பக்தி விழா.">
+                            Devotional festival with kavadi processions at Murugan temples across Tamil Nadu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CUISINE SECTION ===== -->
+        <section class="mb-20">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Must Try</span>
+                    <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50"
+                        id="cuisine-heading">Tamil Cuisine</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="cuisine-prev"
+                        class="w-9 h-9 flex items-center justify-center rounded-full border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1A1D1A] text-stone-500 dark:text-stone-400 hover:bg-emerald-900 hover:text-white hover:border-emerald-900 transition-all duration-200 shadow-sm">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button id="cuisine-next"
+                        class="w-9 h-9 flex items-center justify-center rounded-full border border-stone-200 dark:border-stone-700 bg-white dark:bg-[#1A1D1A] text-stone-500 dark:text-stone-400 hover:bg-emerald-900 hover:text-white hover:border-emerald-900 transition-all duration-200 shadow-sm">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="cuisine-scroll" class="flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory"
+                style="-webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none;">
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-amber-800 to-stone-900 flex items-center justify-center text-5xl">
+                        ☕</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Filter Coffee" data-ta="பில்டர் காபி">Filter Coffee</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="All Regions" data-ta="அனைத்து பகுதி">All Regions</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Strong frothy decoction coffee served in a steel tumbler and davara."
+                            data-ta="வலுவான நுரையுடன் கூடிய தென்னிந்திய திடீர் காபி — எஃகு டம்ளரில் பரிமாறப்படுவது.">
+                            Strong frothy decoction coffee served in a steel tumbler and davara.</p>
+                    </div>
+                </div>
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-red-700 to-orange-800 flex items-center justify-center text-5xl">
+                        🍛</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Chettinad Curry" data-ta="செட்டிநாடு கறி">Chettinad Curry</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="Karaikudi" data-ta="காரைக்குடி">Karaikudi</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Fiery aromatic curry with rare spices like kalpasi and marathi mokku."
+                            data-ta="கல்பாசி மற்றும் மரத்தி மொக்கு போன்ற அரிய மசாலாக்களுடன் கூடிய கார மணமுள்ள கறி.">
+                            Fiery aromatic curry with rare spices like kalpasi and marathi mokku.</p>
+                    </div>
+                </div>
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-green-700 to-emerald-800 flex items-center justify-center text-5xl">
+                        🍃</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Banana Leaf Meal" data-ta="வாழை இலை சாப்பாடு">Banana Leaf Meal</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="Statewide" data-ta="மாநிலம் முழுவதும்">Statewide</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Lavish spread of rice, sambar, rasam, curries &amp; payasam on fresh banana leaf."
+                            data-ta="சாம்பார், ரசம், கறிகள் &amp; பாயசம் — வாழை இலையில் பரிமாறும் பண்டிகை விருந்து.">
+                            Lavish spread of rice, sambar, rasam, curries &amp; payasam on fresh banana leaf.</p>
+                    </div>
+                </div>
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-yellow-600 to-amber-700 flex items-center justify-center text-5xl">
+                        🌀</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Murukku" data-ta="முறுக்கு">Murukku</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="Madurai" data-ta="மதுரை">Madurai</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Crunchy spiral snack of rice flour and black sesame — a Pongal festival staple."
+                            data-ta="அரிசி மாவு மற்றும் கருப்பு எள்ளால் செய்யப்பட்ட மொறுமொறுப்பான சுழல் தின்பண்டம்.">
+                            Crunchy spiral snack of rice flour and black sesame — a Pongal festival staple.</p>
+                    </div>
+                </div>
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-yellow-500 to-amber-500 flex items-center justify-center text-5xl">
+                        🍚</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Ven Pongal" data-ta="வெண் பொங்கல்">Ven Pongal</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="Statewide" data-ta="மாநிலம் முழுவதும்">Statewide</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Comforting rice and lentil dish cooked with ghee, pepper &amp; cumin. Temple classic."
+                            data-ta="நெய், மிளகு &amp; சீரகத்துடன் சமைத்த அரிசி மற்றும் பருப்பு. கோயில் நைவேத்தியம்.">
+                            Comforting rice and lentil dish cooked with ghee, pepper &amp; cumin. Temple classic.</p>
+                    </div>
+                </div>
+                <div
+                    class="min-w-[230px] snap-start rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#1A1D1A] border border-stone-100 dark:border-stone-800 flex-shrink-0">
+                    <div
+                        class="h-32 bg-gradient-to-br from-orange-600 to-red-700 flex items-center justify-center text-5xl">
+                        🫕</div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-1.5">
+                            <h3 class="text-sm font-serif font-bold text-emerald-950 dark:text-emerald-50 cuisine-name"
+                                data-en="Dindigul Biryani" data-ta="திண்டுக்கல் பிரியாணி">Dindigul Biryani</h3>
+                            <span
+                                class="text-[9px] bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold px-2 py-0.5 rounded-full border border-amber-200/50 cuisine-region"
+                                data-en="Dindigul" data-ta="திண்டுக்கல்">Dindigul</span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 font-light leading-relaxed cuisine-desc"
+                            data-en="Uniquely tangy biryani with seeraga samba rice — Tamil Nadu's most loved biryani."
+                            data-ta="சீரக சம்பா அரிசியில் செய்யப்படும் தனித்துவமான புளிமையான பிரியாணி.">Uniquely tangy
+                            biryani with seeraga samba rice — Tamil Nadu's most loved biryani.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== KOLLYWOOD CINEMA SECTION ===== -->
+        <section class="mb-20">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Entertainment</span>
+                    <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50">Kollywood — Tamil Cinema</h2>
+                </div>
+                <span class="text-xs text-stone-400 hidden md:block font-light">World's 2nd largest film industry by output</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-gradient-to-br from-zinc-900 via-stone-900 to-zinc-800 rounded-3xl p-7 text-white relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-amber-400/5 rounded-full -translate-y-10 translate-x-10"></div>
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🎬</div>
+                    <h3 class="font-serif text-2xl font-bold mb-2">Kollywood</h3>
+                    <p class="text-stone-300 text-sm font-light leading-relaxed mb-5">Tamil Nadu's film industry, headquartered in Chennai, produces 200+ films annually with a global audience of 80 million Tamil speakers worldwide.</p>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-white/10 rounded-xl p-2.5 backdrop-blur-sm border border-white/5"><p class="text-amber-300 font-bold text-lg font-serif">200+</p><p class="text-[8px] text-stone-400 uppercase tracking-widest mt-0.5">Films/Year</p></div>
+                        <div class="bg-white/10 rounded-xl p-2.5 backdrop-blur-sm border border-white/5"><p class="text-amber-300 font-bold text-lg font-serif">80M+</p><p class="text-[8px] text-stone-400 uppercase tracking-widest mt-0.5">Audience</p></div>
+                        <div class="bg-white/10 rounded-xl p-2.5 backdrop-blur-sm border border-white/5"><p class="text-amber-300 font-bold text-lg font-serif">100+</p><p class="text-[8px] text-stone-400 uppercase tracking-widest mt-0.5">Yrs Legacy</p></div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="group bg-gradient-to-br from-red-700 to-rose-800 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">⭐</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">Rajinikanth</h4>
+                        <p class="text-[10px] text-red-200 font-light">Superstar of Indian Cinema</p>
+                        <p class="text-[10px] text-red-300 mt-2 leading-relaxed">Baasha, Muthu, Enthiran, 2.0</p>
+                    </div>
+                    <div class="group bg-gradient-to-br from-violet-600 to-purple-700 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">🎵</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">A.R. Rahman</h4>
+                        <p class="text-[10px] text-purple-200 font-light">Oscar-winning Composer</p>
+                        <p class="text-[10px] text-purple-300 mt-2 leading-relaxed">Slumdog Millionaire, Roja</p>
+                    </div>
+                    <div class="group bg-gradient-to-br from-blue-700 to-indigo-800 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">🎥</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">Mani Ratnam</h4>
+                        <p class="text-[10px] text-blue-200 font-light">Legendary Director</p>
+                        <p class="text-[10px] text-blue-300 mt-2 leading-relaxed">Ponniyin Selvan, Roja, Bombay</p>
+                    </div>
+                    <div class="group bg-gradient-to-br from-teal-600 to-emerald-700 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">🌟</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">Shankar</h4>
+                        <p class="text-[10px] text-teal-200 font-light">Visual Spectacle Director</p>
+                        <p class="text-[10px] text-teal-300 mt-2 leading-relaxed">Robot, 2.0, Indian</p>
+                    </div>
+                    <div class="group bg-gradient-to-br from-amber-600 to-orange-700 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">🎭</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">Kamal Haasan</h4>
+                        <p class="text-[10px] text-amber-200 font-light">Versatile Actor & Filmmaker</p>
+                        <p class="text-[10px] text-amber-300 mt-2 leading-relaxed">Nayakan, Vikram, Dasavathaaram</p>
+                    </div>
+                    <div class="group bg-gradient-to-br from-stone-600 to-zinc-700 rounded-2xl p-5 text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer">
+                        <div class="text-3xl mb-2">🎶</div>
+                        <h4 class="font-serif font-bold text-sm mb-0.5">Ilaiyaraaja</h4>
+                        <p class="text-[10px] text-stone-300 font-light">Music Maestro</p>
+                        <p class="text-[10px] text-stone-400 mt-2 leading-relaxed">5,000+ songs, 1,000+ films</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== NATURAL WONDERS SECTION ===== -->
+        <section class="mb-20">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Breathtaking</span>
+                <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50">Natural Wonders</h2>
+                <p class="text-stone-500 dark:text-stone-400 text-sm font-light mt-2 max-w-xl mx-auto">From the world's 2nd-largest mangrove to misty hill stations — Tamil Nadu's nature will leave you in awe.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-800 via-teal-700 to-emerald-600"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">🌿</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Cuddalore</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Pichavaram Mangrove</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">World's 2nd largest mangrove forest — a serene boat ride through 1,000+ tiny islands.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-sky-700 via-blue-600 to-indigo-700"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">⛰️</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Nilgiris</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Ooty — Queen of Hills</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">2,240m above sea level — tea gardens, botanical parks & UNESCO Nilgiri Mountain Railway.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-cyan-700 via-teal-600 to-blue-700"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">💧</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Dharmapuri</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Hogenakkal Falls</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">The "Niagara of India" — spectacular waterfall on River Kaveri with scenic coracle rides.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-700 via-orange-600 to-yellow-700"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">🦅</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Nilgiris</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Mudumalai Wildlife</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">India's first wildlife sanctuary — wild elephants, tigers, leopards & rare birds.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-violet-700 via-purple-600 to-fuchsia-700"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">🏝️</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Kanyakumari</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Land's End</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">Where 3 seas meet — Bay of Bengal, Arabian Sea & Indian Ocean. Witness sunrise & sunset from the same spot.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group relative rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-700 via-red-600 to-orange-700"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="relative p-7 min-h-[210px] flex flex-col justify-between">
+                        <div class="text-5xl">🌊</div>
+                        <div><span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Tirunelveli</span>
+                            <h3 class="text-white font-serif font-bold text-xl mt-2 mb-1">Courtallam Falls</h3>
+                            <p class="text-white/70 text-xs font-light leading-relaxed">The "Spa of the South" — 9 therapeutic waterfalls believed to have medicinal properties.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!-- ===== BEST TIME TO VISIT ===== -->
+        <section class="mb-20">
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-amber-600 font-bold block mb-1">Plan Your
+                    Trip</span>
+                <h2 class="text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50" id="season-heading">Best
+                    Time to Visit</h2>
+                <p class="text-stone-500 dark:text-stone-400 text-sm font-light mt-2" id="season-subtitle">Pick the
+                    right season for the perfect Tamil Nadu experience.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                    class="rounded-2xl bg-gradient-to-br from-blue-50 to-sky-100 dark:from-blue-950/40 dark:to-sky-900/20 border border-blue-100 dark:border-blue-800/30 p-7 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-xl">❄️
+                        </div>
+                        <div>
+                            <h3 class="font-serif font-bold text-blue-900 dark:text-blue-100 text-lg season-name"
+                                data-en="Cool Season" data-ta="குளிர் காலம்">Cool Season</h3>
+                            <span class="text-xs text-blue-600 dark:text-blue-400 font-medium season-months"
+                                data-en="October – February" data-ta="அக்டோபர் – பிப்ரவரி">October – February</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-blue-800 dark:text-blue-200 font-light leading-relaxed mb-4 season-desc"
+                        data-en="The best time to visit. Pleasant 18–28°C temperatures ideal for sightseeing, beaches &amp; trekking."
+                        data-ta="சுற்றுலாவிற்கு சிறந்த நேரம். கடற்கரை மற்றும் மலையேற்றத்திற்கு ஏற்ற 18–28°C வெப்பநிலை.">
+                        The best time to visit. Pleasant 18–28°C temperatures ideal for sightseeing, beaches &amp;
+                        trekking.</p>
+                    <p class="text-xs text-blue-700 dark:text-blue-300 font-bold uppercase tracking-wide mb-2.5 season-recommends"
+                        data-en="Go to:" data-ta="செல்லுங்கள்:">Go to:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Ooty</span>
+                        <span
+                            class="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Kanyakumari</span>
+                        <span
+                            class="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Marina
+                            Beach</span>
+                        <span
+                            class="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Thanjavur</span>
+                    </div>
+                </div>
+                <div
+                    class="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-950/40 dark:to-orange-900/20 border border-amber-100 dark:border-amber-800/30 p-7 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center text-xl">☀️
+                        </div>
+                        <div>
+                            <h3 class="font-serif font-bold text-amber-900 dark:text-amber-100 text-lg season-name"
+                                data-en="Summer Season" data-ta="கோடை காலம்">Summer Season</h3>
+                            <span class="text-xs text-amber-600 dark:text-amber-400 font-medium season-months"
+                                data-en="March – May" data-ta="மார்ச் – மே">March – May</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-amber-800 dark:text-amber-200 font-light leading-relaxed mb-4 season-desc"
+                        data-en="Hot on plains (32–42°C); perfect escape to hill stations like Ooty, Kodaikanal &amp; Yercaud."
+                        data-ta="சமவெளிகளில் வெப்பம் (32–42°C); ஊட்டி, கொடைக்கானல் &amp; ஏற்காடு போன்ற மலை வாசஸ்தலங்களுக்கு ஏற்றது.">
+                        Hot on plains (32–42°C); perfect escape to hill stations like Ooty, Kodaikanal &amp; Yercaud.
+                    </p>
+                    <p class="text-xs text-amber-700 dark:text-amber-300 font-bold uppercase tracking-wide mb-2.5 season-recommends"
+                        data-en="Go to:" data-ta="செல்லுங்கள்:">Go to:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Ooty</span>
+                        <span
+                            class="bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Kodaikanal</span>
+                        <span
+                            class="bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Yercaud</span>
+                        <span
+                            class="bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Valparai</span>
+                    </div>
+                </div>
+                <div
+                    class="rounded-2xl bg-gradient-to-br from-teal-50 to-emerald-100 dark:from-teal-950/40 dark:to-emerald-900/20 border border-teal-100 dark:border-teal-800/30 p-7 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-teal-500/20 rounded-xl flex items-center justify-center text-xl">🌧️
+                        </div>
+                        <div>
+                            <h3 class="font-serif font-bold text-teal-900 dark:text-teal-100 text-lg season-name"
+                                data-en="Monsoon Season" data-ta="மழைக் காலம்">Monsoon Season</h3>
+                            <span class="text-xs text-teal-600 dark:text-teal-400 font-medium season-months"
+                                data-en="June – September" data-ta="ஜூன் – செப்டம்பர்">June – September</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-teal-800 dark:text-teal-200 font-light leading-relaxed mb-4 season-desc"
+                        data-en="Lush greenery and gushing waterfalls. Ideal for nature lovers and wildlife enthusiasts."
+                        data-ta="பசுமையான காடுகள் மற்றும் பாயும் அருவிகள். இயற்கை காதலர்களுக்கும் வனவிலங்கு ஆர்வலர்களுக்கும் ஏற்றது.">
+                        Lush greenery and gushing waterfalls. Ideal for nature lovers and wildlife enthusiasts.</p>
+                    <p class="text-xs text-teal-700 dark:text-teal-300 font-bold uppercase tracking-wide mb-2.5 season-recommends"
+                        data-en="Go to:" data-ta="செல்லுங்கள்:">Go to:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="bg-teal-100 dark:bg-teal-900/40 text-teal-800 dark:text-teal-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Courtallam</span>
+                        <span
+                            class="bg-teal-100 dark:bg-teal-900/40 text-teal-800 dark:text-teal-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Mudumalai</span>
+                        <span
+                            class="bg-teal-100 dark:bg-teal-900/40 text-teal-800 dark:text-teal-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Hogenakkal</span>
+                        <span
+                            class="bg-teal-100 dark:bg-teal-900/40 text-teal-800 dark:text-teal-200 text-[10px] font-semibold px-2.5 py-1 rounded-full">Anaimalai</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DID YOU KNOW TICKER ===== -->
+        <section class="mb-20">
+            <div
+                class="bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-52 h-52 bg-white/5 rounded-full pointer-events-none"></div>
+                <div class="absolute -bottom-10 -left-10 w-36 h-36 bg-white/5 rounded-full pointer-events-none"></div>
+                <div class="relative flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-shrink-0 text-center">
+                        <div
+                            class="w-14 h-14 bg-amber-400/20 rounded-2xl flex items-center justify-center mb-2 mx-auto">
+                            <span class="text-2xl">💡</span>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest text-amber-300 font-bold"
+                            id="ticker-label">Did You Know?</span>
+                    </div>
+                    <div class="flex-1 text-center md:text-left min-h-[56px] flex items-center">
+                        <p class="text-white font-serif text-xl md:text-2xl font-light leading-relaxed transition-opacity duration-500"
+                            id="ticker-text">Tamil is one of the world's longest-surviving classical languages, with a
+                            literary tradition spanning over 2,000 years.</p>
+                    </div>
+                    <div class="flex items-center space-x-3 flex-shrink-0">
+                        <button id="ticker-prev"
+                            class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all"><i
+                                data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        <span id="ticker-counter" class="text-white/40 text-xs font-mono w-10 text-center">1 / 7</span>
+                        <button id="ticker-next"
+                            class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all"><i
+                                data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <section class="mb-20">
@@ -464,8 +1196,6 @@
             </button>
         </div>
     </section>
-
-    </main>
 
     <div id="ministers-modal"
         class="hidden fixed inset-0 z-[100] bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
@@ -497,11 +1227,101 @@
         </div>
     </div>
 
+    <!-- ===== AI TRAVEL ASSISTANT (EXPLORE BOT) ===== -->
+    <div class="fixed bottom-8 right-8 z-[150] flex flex-col items-end gap-4">
+        <!-- Chat Modal -->
+        <!-- Floating Shortcut Button -->
+        <a id="toggle-chat-btn" href="chat.html" class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-2xl flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all duration-300 group">
+            <i data-lucide="message-square" class="w-7 h-7 group-hover:hidden"></i>
+            <i data-lucide="sparkles" class="w-7 h-7 hidden group-hover:block animate-pulse"></i>
+            <div class="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 border-2 border-white dark:border-[#121412] rounded-full"></div>
+        </a>
+    </div>
 
-    <footer class="site-footer">
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 YourBrand. All Rights Reserved.</p>
+    <footer class="bg-emerald-950 text-white mt-4">
+        <div class="max-w-7xl mx-auto px-6 pt-14 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <div class="flex items-center space-x-1 mb-4">
+                        <span class="font-serif text-2xl font-bold text-emerald-50">Explore</span>
+                        <span class="font-serif text-2xl font-light text-emerald-400">Tamil Nadu</span>
+                    </div>
+                    <p class="text-stone-400 text-sm font-light leading-relaxed mb-5">Your ultimate guide to Tamil Nadu
+                        — 38 districts, 2000+ years of culture, and countless stories waiting to be discovered.</p>
+                    <div class="flex space-x-3">
+                        <a href="#"
+                            class="w-9 h-9 rounded-full bg-emerald-900 hover:bg-emerald-700 flex items-center justify-center transition-colors"
+                            aria-label="Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-full bg-emerald-900 hover:bg-emerald-700 flex items-center justify-center transition-colors"
+                            aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                        <a href="#"
+                            class="w-9 h-9 rounded-full bg-emerald-900 hover:bg-emerald-700 flex items-center justify-center transition-colors"
+                            aria-label="Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+                <!-- North & Central -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-5">North &amp;
+                        Central</h4>
+                    <ul class="space-y-2.5 text-sm text-stone-400">
+                        <li><a href="districts.html?name=Chennai"
+                                class="hover:text-emerald-300 transition-colors">Chennai</a></li>
+                        <li><a href="districts.html?name=Kanchipuram"
+                                class="hover:text-emerald-300 transition-colors">Kanchipuram</a></li>
+                        <li><a href="districts.html?name=Thanjavur"
+                                class="hover:text-emerald-300 transition-colors">Thanjavur</a></li>
+                        <li><a href="districts.html?name=Tiruchirappalli"
+                                class="hover:text-emerald-300 transition-colors">Tiruchirappalli</a></li>
+                        <li><a href="districts.html?name=Vellore"
+                                class="hover:text-emerald-300 transition-colors">Vellore</a></li>
+                    </ul>
+                </div>
+                <!-- South & West -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-5">South &amp; West
+                    </h4>
+                    <ul class="space-y-2.5 text-sm text-stone-400">
+                        <li><a href="districts.html?name=Madurai"
+                                class="hover:text-emerald-300 transition-colors">Madurai</a></li>
+                        <li><a href="districts.html?name=Kanyakumari"
+                                class="hover:text-emerald-300 transition-colors">Kanyakumari</a></li>
+                        <li><a href="districts.html?name=Coimbatore"
+                                class="hover:text-emerald-300 transition-colors">Coimbatore</a></li>
+                        <li><a href="districts.html?name=The Nilgiris"
+                                class="hover:text-emerald-300 transition-colors">The Nilgiris</a></li>
+                        <li><a href="districts.html?name=Tirunelveli"
+                                class="hover:text-emerald-300 transition-colors">Tirunelveli</a></li>
+                    </ul>
+                </div>
+                <!-- Explore -->
+                <div>
+                    <h4 class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mb-5">Explore</h4>
+                    <ul class="space-y-2.5 text-sm text-stone-400">
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors flex items-center"><i
+                                    data-lucide="tent-tree" class="w-3.5 h-3.5 mr-2 text-emerald-600"></i>Trekking &amp;
+                                Adventure</a></li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors flex items-center"><i
+                                    data-lucide="landmark" class="w-3.5 h-3.5 mr-2 text-emerald-600"></i>Ancient
+                                Heritage</a></li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors flex items-center"><i
+                                    data-lucide="waves" class="w-3.5 h-3.5 mr-2 text-emerald-600"></i>Coastal
+                                Beaches</a></li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors flex items-center"><i
+                                    data-lucide="cloud" class="w-3.5 h-3.5 mr-2 text-emerald-600"></i>Hill Stations</a>
+                        </li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors flex items-center"><i
+                                    data-lucide="utensils" class="w-3.5 h-3.5 mr-2 text-emerald-600"></i>Tamil
+                                Cuisine</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-emerald-900 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-stone-500">
+                <p>&copy; 2026 Explore Tamil Nadu. All Rights Reserved.</p>
+                <p class="mt-2 md:mt-0">Crafted with ❤️ for Tamil Nadu</p>
+            </div>
         </div>
     </footer>
 
@@ -537,6 +1357,159 @@
                 localStorage.setItem('color-theme', 'dark');
             }
         });
+
+        // ---------------- MOBILE THEME TOGGLE ----------------
+        const themeToggleMob = document.getElementById('theme-toggle-mob');
+        const sunMob = document.getElementById('sun-icon-mob');
+        const moonMob = document.getElementById('moon-icon-mob');
+        // Sync mobile icons on load
+        if (document.documentElement.classList.contains('dark')) {
+            sunMob.classList.remove('hidden'); moonMob.classList.add('hidden');
+        }
+        themeToggleMob && themeToggleMob.addEventListener('click', function () {
+            sunIcon.classList.toggle('hidden'); moonIcon.classList.toggle('hidden');
+            sunMob.classList.toggle('hidden'); moonMob.classList.toggle('hidden');
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // ---------------- MOBILE HAMBURGER MENU ----------------
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileNavPanel = document.getElementById('mobile-nav-panel');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeNavIcon = document.getElementById('close-nav-icon');
+        if (mobileMenuBtn && mobileNavPanel) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isOpen = !mobileNavPanel.classList.contains('hidden');
+                mobileNavPanel.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('hidden', !isOpen);
+                closeNavIcon.classList.toggle('hidden', isOpen);
+            });
+        }
+
+        // ---------------- LANGUAGE SWITCHER ----------------
+        let currentLang = localStorage.getItem('site-lang') || 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('site-lang', lang);
+
+            // Toggle active styles on EN/TA buttons
+            ['lang-en', 'lang-ta', 'lang-en-mob', 'lang-ta-mob'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                const isEN = id.includes('en');
+                const active = (lang === 'en' && isEN) || (lang === 'ta' && !isEN);
+                btn.classList.toggle('text-emerald-700', active);
+                btn.classList.toggle('dark:text-emerald-300', active);
+                btn.classList.toggle('bg-emerald-50', active);
+                btn.classList.toggle('dark:bg-emerald-900/40', active);
+                btn.classList.toggle('text-stone-500', !active);
+                btn.classList.toggle('dark:text-stone-400', !active);
+            });
+
+            // Update data-attribute-driven bilingual elements
+            const keys = [
+                'festival-name', 'festival-month', 'festival-desc',
+                'cuisine-name', 'cuisine-region', 'cuisine-desc',
+                'season-name', 'season-months', 'season-desc', 'season-recommends'
+            ];
+            keys.forEach(cls => {
+                document.querySelectorAll('.' + cls).forEach(el => {
+                    const val = el.getAttribute('data-' + lang);
+                    if (val) el.textContent = val;
+                });
+            });
+
+            // Update ticker label
+            const tickerLabel = document.getElementById('ticker-label');
+            if (tickerLabel) tickerLabel.textContent = lang === 'ta' ? 'உங்களுக்கு தெரியுமா?' : 'Did You Know?';
+
+            // Update ticker text
+            renderTicker();
+
+            // Update existing data-translate elements (ministers section etc.)
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Re-render ministers list
+            if (lang === 'ta') { renderMinisters(ministersList_TA); }
+            else { renderMinisters(ministersList_EN); }
+        }
+
+        // Apply saved language on load
+        if (currentLang === 'ta') setLanguage('ta');
+
+        // ---------------- DID YOU KNOW TICKER ----------------
+        const tickerFacts = {
+            en: [
+                "Tamil is one of the world's longest-surviving classical languages, with a literary tradition over 2,000 years old.",
+                "The Brihadeeswarar Temple in Thanjavur was built over 1,000 years ago — its shadow never falls on the ground at noon.",
+                "Tamil Nadu has the second longest coastline in India, stretching 1,076 km along the Bay of Bengal.",
+                "The classical dance form Bharatanatyam originated in Tamil Nadu's ancient temples over 2,000 years ago.",
+                "Tamil Nadu is home to over 33,000 ancient temples — more than any other state in India.",
+                "Marina Beach in Chennai is the world's second-longest natural urban beach, stretching 13 km.",
+                "Kanyakumari is the only place in India where three seas — the Bay of Bengal, Arabian Sea, and Indian Ocean — meet."
+            ],
+            ta: [
+                "தமிழ் உலகின் மிகவும் நீண்ட காலம் உயிர்வாழும் செம்மொழிகளில் ஒன்று — 2,000 ஆண்டுகளுக்கும் மேலான இலக்கிய பாரம்பரியம் கொண்டது.",
+                "தஞ்சாவூர் பிரகதீஸ்வர கோயில் ஆயிரம் ஆண்டுகளுக்கு முன் கட்டப்பட்டது — நண்பகலில் அதன் நிழல் தரையில் விழுவதில்லை.",
+                "தமிழ்நாட்டில் இந்தியாவின் இரண்டாவது நீளமான கடற்கரை உள்ளது — வங்காள விரிகுடா வழியாக 1,076 கி.மீ.",
+                "பரதநாட்டியம் என்ற செவ்வியல் நடன வடிவம் தமிழ்நாட்டின் பண்டைய கோயில்களில் 2,000 ஆண்டுகளுக்கும் மேலாக தோன்றியது.",
+                "தமிழ்நாட்டில் 33,000க்கும் மேற்பட்ட பண்டைய கோயில்கள் உள்ளன — இந்தியாவில் வேறு எந்த மாநிலத்தையும் விட அதிகம்.",
+                "சென்னையிலுள்ள மெரினா கடற்கரை 13 கி.மீ நீளம் கொண்ட உலகின் இரண்டாவது நீளமான இயற்கை நகர்ப்புறக் கடற்கரையாகும்.",
+                "கன்னியாகுமரி இந்தியாவில் மட்டுமே காணப்படும் — வங்காள விரிகுடா, அரேபியக் கடல், இந்தியப் பெருங்கடல் சந்திக்கும் இடம்."
+            ]
+        };
+        let tickerIndex = 0;
+        let tickerInterval;
+
+        function renderTicker() {
+            const facts = tickerFacts[currentLang] || tickerFacts.en;
+            const textEl = document.getElementById('ticker-text');
+            const counterEl = document.getElementById('ticker-counter');
+            if (!textEl) return;
+            textEl.style.opacity = '0';
+            setTimeout(() => {
+                textEl.textContent = facts[tickerIndex];
+                if (counterEl) counterEl.textContent = (tickerIndex + 1) + ' / ' + facts.length;
+                textEl.style.opacity = '1';
+            }, 250);
+        }
+
+        function startTickerAuto() {
+            clearInterval(tickerInterval);
+            tickerInterval = setInterval(() => {
+                tickerIndex = (tickerIndex + 1) % tickerFacts.en.length;
+                renderTicker();
+            }, 6000);
+        }
+
+        const tickerNext = document.getElementById('ticker-next');
+        const tickerPrev = document.getElementById('ticker-prev');
+        if (tickerNext) {
+            tickerNext.addEventListener('click', () => {
+                tickerIndex = (tickerIndex + 1) % tickerFacts.en.length;
+                renderTicker(); startTickerAuto();
+            });
+        }
+        if (tickerPrev) {
+            tickerPrev.addEventListener('click', () => {
+                tickerIndex = (tickerIndex - 1 + tickerFacts.en.length) % tickerFacts.en.length;
+                renderTicker(); startTickerAuto();
+            });
+        }
+        renderTicker();
+        startTickerAuto();
 
         // ---------------- DISTRICT TRAIN GENERATION ----------------
         const districts = [
@@ -635,6 +1608,23 @@
 
 
         setupAutocomplete('header-search-loc', 'header-search-suggestions');
+
+        // ---------------- CUISINE SCROLL BUTTONS ----------------
+        const cuisineScroll = document.getElementById('cuisine-scroll');
+        const cuisinePrev = document.getElementById('cuisine-prev');
+        const cuisineNext = document.getElementById('cuisine-next');
+        const CUISINE_SCROLL_AMOUNT = 260;
+
+        if (cuisineNext && cuisineScroll) {
+            cuisineNext.addEventListener('click', () => {
+                cuisineScroll.scrollBy({ left: CUISINE_SCROLL_AMOUNT, behavior: 'smooth' });
+            });
+        }
+        if (cuisinePrev && cuisineScroll) {
+            cuisinePrev.addEventListener('click', () => {
+                cuisineScroll.scrollBy({ left: -CUISINE_SCROLL_AMOUNT, behavior: 'smooth' });
+            });
+        }
     </script>
     <script>
         lucide.createIcons();
@@ -888,7 +1878,7 @@
             });
         }
 
-        // Close when clicking outside the box
+        // Close on backdrop click
         if (modal) {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
@@ -897,7 +1887,124 @@
                 }
             });
         }
+
+        // ======== AI EXPLORE BOT (SMART AGENT) ========
+        // Logic moved to explore_bot.js for cross-page availability
+        // ######## SMART JOURNEY CONCIERGE LOGIC ########
+        const JourneyData = {
+            "spiritual_2": { district: "Madurai", title: "Eternal Temples Weekend", itinerary: [
+                { title: "Sacred Sunrise", desc: "Meenakshi Amman Temple & Palace tour." },
+                { title: "Pilgrim Walk", desc: "Alagar Kovil visits then evening market trails." }
+            ]},
+            "spiritual_4": { district: "Thanjavur", title: "Great Chola Legacy", itinerary: [
+                { title: "Big Temple Tour", desc: "Deep architectural dive into the 1000-year-old temple." },
+                { title: "Bronze & Art", desc: "Palace bronze museum & Saraswathi Mahal Library." },
+                { title: "Silk Weaving", desc: "Live demo of traditional Silk weaving and doll making." },
+                { title: "River Vibes", desc: "Evening by the Vennar river & local food trail." }
+            ]},
+            "spiritual_7": { district: "Kanchipuram", title: "Pilgrimage Panorama", itinerary: [
+                { title: "Gateway to Peace", desc: "Vellore Fort & Golden Temple (Sripuram)." },
+                { title: "Temple City", desc: "Ancient Kanchi temples and silk heritage centers." },
+                { title: "Cave Wonders", desc: "Rock-cut caves of Mahabalipuram coastal sites." },
+                { title: "Island Peace", desc: "Rameshwaram train journey via Pamban bridge." },
+                { title: "Land's End", desc: "Kanyakumari three seas meeting point & sunrise." },
+                { title: "Memorials", desc: "Vivekananda rock and Thiruvalluvar Statue visits." },
+                { title: "Homebound", desc: "Local craft shopping and peaceful beach evening." }
+            ]},
+            "adventure_2": { district: "The Nilgiris", title: "Peak Discovery", itinerary: [
+                { title: "Misty Heights", desc: "Doddabetta Peak trek and Tea Museum visit." },
+                { title: "Lake Safari", desc: "Botanical gardens and boating at Ooty lake." }
+            ]},
+            "adventure_4": { district: "The Nilgiris", title: "The High Ranges", itinerary: [
+                { title: "Toy Train Ride", desc: "Iconic UNESCO mountain railway journey from Coonoor." },
+                { title: "Tea Trail", desc: "Trekking through lush green slopes and tea estates." },
+                { title: "Wild Safari", desc: "Mudumalai tiger reserve morning safari adventure." },
+                { title: "Waterfall Hike", desc: "Pykara falls and speedboat riding experience." }
+            ]},
+            "adventure_7": { district: "The Nilgiris", title: "Great Western Ghats", itinerary: [
+                { title: "High Altitude", desc: "Acclimatize in Ooty with lake and garden walks." },
+                { title: "Coonoor Cliffs", desc: "Dolphins Nose and Lamb's Rock viewpoints." },
+                { title: "Silent Valley", desc: "Trekking through unexplored forest patches." },
+                { title: "Elephant Camp", desc: "Interact with giants at Mudumalai Theppakadu camp." },
+                { title: "Dam Views", desc: "Pykara and Emerald lake photography trails." },
+                { title: "Tribal Life", desc: "Visit Toda Hamlet and learn native embroidery." },
+                { title: "Departure", desc: "Descending the 36 hairpin bends via Masinagudi." }
+            ]},
+            "relax_2": { district: "Kanyakumari", title: "Coastal Serenity", itinerary: [
+                { title: "Ocean Edge", desc: "Triveni Sangam dip and sunset at beach." },
+                { title: "Statue Walk", desc: "Boat ride to Vivekananda Rock and Memorial." }
+            ]},
+            "urban_2": { district: "Chennai", title: "The Marina Vibe", itinerary: [
+                { title: "Beach Energy", desc: "Evening walk at Marina and lighthouse view." },
+                { title: "Elite Hub", desc: "Shopping at T-Nagar and night cuisine trail." }
+            ]}
+        };
+
+        let currentConcierge = { mood: '', duration: '' };
+
+        function updateConcierge(type, value, btn) {
+            currentConcierge[type] = value;
+            
+            // UI updates
+            const container = btn.parentElement;
+            container.querySelectorAll('button').forEach(b => b.classList.remove('step-active'));
+            btn.classList.add('step-active');
+            
+            // Generate a fake ID for flare
+            const idEl = document.getElementById('blueprint-id');
+            if (idEl) idEl.textContent = `Blueprint #TN-${Math.floor(Math.random()*9000)+1000}`;
+            
+            checkConcierge();
+        }
+
+        function checkConcierge() {
+            if (currentConcierge.mood && currentConcierge.duration) {
+                const key = `${currentConcierge.mood}_${currentConcierge.duration}`;
+                const data = JourneyData[key] || JourneyData["spiritual_2"]; // Fallback
+                
+                renderBlueprint(data);
+            }
+        }
+
+        function renderBlueprint(data) {
+            const placeholder = document.getElementById('planner-placeholder');
+            const blueprint = document.getElementById('blueprint-area');
+            const timeline = document.getElementById('blueprint-timeline');
+            const title = document.getElementById('blueprint-title');
+            const district = document.getElementById('blueprint-district');
+            const link = document.getElementById('blueprint-link');
+
+            placeholder.classList.add('hidden');
+            blueprint.classList.remove('hidden');
+            
+            title.textContent = data.title;
+            district.textContent = data.district;
+            link.href = `districts.html?name=${encodeURIComponent(data.district)}`;
+
+            timeline.innerHTML = '<div class="blueprint-line"></div>'; // Reset with line
+            
+            data.itinerary.forEach((item, idx) => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'flex gap-6 items-start relative z-10 animate-reveal';
+                dayDiv.style.animationDelay = `${idx * 0.15}s`;
+                dayDiv.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex flex-shrink-0 items-center justify-center text-[10px] font-bold text-emerald-700 dark:text-emerald-300 border-4 border-white dark:border-[#1A1D1A] shadow-sm">${item.day || (idx+1)}</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-emerald-950 dark:text-emerald-50 mb-1">${item.title}</h4>
+                        <p class="text-xs text-stone-500 font-light leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+                timeline.appendChild(dayDiv);
+            });
+            
+            if (window.lucide) lucide.createIcons();
+        }
+
     </script>
+
+    <script src="theme_manager.js"></script>
+    <script type="module" src="explore_bot.js"></script>
+
 </body>
 
 </html>

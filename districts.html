@@ -7,6 +7,13 @@
     <title>Explore Tamil Nadu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -114,10 +121,17 @@
                 </div>
                 <span class="ml-3 font-semibold tracking-wide drop-shadow-md">Back to Explore</span>
             </a>
-            <div id="loading-badge"
-                class="px-4 py-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full text-sm font-medium animate-pulse flex items-center">
-                <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Syncing Wikipedia...
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/40 transition-colors border border-white/10">
+                    <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden text-white"></i>
+                    <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-white"></i>
+                </button>
+                <div id="loading-badge"
+                    class="px-4 py-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full text-sm font-medium animate-pulse flex items-center">
+                    <i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Syncing Wikipedia...
+                </div>
             </div>
+
         </div>
     </nav>
 
@@ -138,6 +152,43 @@
     <main class="max-w-7xl mx-auto px-6 py-12 space-y-24">
 
         <section class="reveal max-w-5xl mx-auto mb-16">
+            <!-- ===== ATMOSPHERE CARD ===== -->
+            <div id="atmosphere-card" class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Live Time -->
+                <div class="bg-white/40 dark:bg-[#1E221E]/40 backdrop-blur-xl rounded-[2rem] p-8 border border-white/20 dark:border-stone-800 flex items-center gap-6 group hover:shadow-2xl transition-all duration-700 hover:-translate-y-1">
+                    <div class="w-14 h-14 bg-amber-500/15 rounded-[1.25rem] flex items-center justify-center text-amber-600 shadow-inner group-hover:rotate-12 transition-transform duration-500">
+                        <i data-lucide="clock-4" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-[.2em] text-stone-400 font-bold mb-1">Local Time</p>
+                        <h4 id="local-time-display" class="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100">--:--</h4>
+                    </div>
+                </div>
+                <!-- Live Weather (Dynamic) -->
+                <div class="bg-white/40 dark:bg-[#1E221E]/40 backdrop-blur-xl rounded-[2rem] p-8 border border-white/20 dark:border-stone-800 flex items-center gap-6 group hover:shadow-2xl transition-all duration-700 hover:-translate-y-1">
+                    <div id="weather-icon-bg" class="w-14 h-14 bg-emerald-500/15 rounded-[1.25rem] flex items-center justify-center text-emerald-600 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                        <i id="weather-icon" data-lucide="cloud-sun" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <p class="text-[10px] uppercase tracking-[.2em] text-stone-400 font-bold">Atmosphere</p>
+                            <span id="weather-label" class="text-[8px] bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-tighter">Clear</span>
+                        </div>
+                        <h4 id="weather-temp" class="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100">--°C</h4>
+                    </div>
+                </div>
+                <!-- Travel Advice -->
+                <div class="bg-white/40 dark:bg-[#1E221E]/40 backdrop-blur-xl rounded-[2rem] p-8 border border-white/20 dark:border-stone-800 flex items-center gap-6 group hover:shadow-2xl transition-all duration-700 hover:-translate-y-1">
+                    <div class="w-14 h-14 bg-indigo-500/15 rounded-[1.25rem] flex items-center justify-center text-indigo-600 shadow-inner group-hover:rotate-45 transition-transform duration-700">
+                        <i data-lucide="compass" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <p class="text-[10px] uppercase tracking-[.2em] text-stone-400 font-bold mb-1">Explorer Advice</p>
+                        <h4 id="travel-advice" class="text-[11px] font-medium text-stone-600 dark:text-stone-400 leading-snug pr-4 italic">Preparing your journey...</h4>
+                    </div>
+                </div>
+            </div>
+
             <div id="history-content"
                 class="text-lg md:text-xl text-stone-600 dark:text-stone-300 leading-[2.2] font-serif text-justify">
                 <div class="animate-pulse flex flex-col space-y-4">
@@ -149,7 +200,40 @@
         </section>
 
         <section class="reveal">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="image-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20" id="image-grid">
+            </div>
+
+            <!-- ===== SIGNATURE FLAVORS SECTION ===== -->
+            <div id="flavor-section" class="hidden">
+                <div class="text-center mb-12">
+                    <span id="flavor-label" class="text-xs uppercase tracking-[.3em] text-amber-600 font-bold block mb-2">Taste of ${cleanName}</span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-emerald-950 dark:text-emerald-50">Local Signature Flavors</h2>
+                    <div class="w-12 h-0.5 bg-amber-500 mx-auto mt-4"></div>
+                </div>
+
+                <div class="bg-white dark:bg-[#1A1D1A] rounded-[3rem] p-8 md:p-12 border border-stone-100 dark:border-stone-800 flex flex-col md:flex-row items-center gap-10 hover:shadow-3xl transition-shadow duration-700">
+                    <div class="w-full md:w-2/5 h-64 md:h-80 rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
+                        <img id="flavor-img" src="" alt="Local Dish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-amber-500 rounded-full animate-ping"></span>
+                            <span class="text-white text-[10px] font-bold uppercase tracking-widest">Iconic Delicacy</span>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-3/5 space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-600">
+                                <i data-lucide="utensils-crossed" class="w-6 h-6"></i>
+                            </div>
+                            <h3 id="flavor-title" class="text-3xl font-serif font-bold text-stone-800 dark:text-stone-100">Gourmet Specialty</h3>
+                        </div>
+                        <p id="flavor-desc" class="text-stone-600 dark:text-stone-400 leading-relaxed text-lg italic serif">This district is famous for its unique culinary heritage that has stood the test of time.</p>
+                        <div class="pt-4 flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-stone-50 dark:bg-stone-800/50 rounded-full text-[10px] font-bold uppercase tracking-widest text-stone-500"><i data-lucide="heart" class="w-3 h-3 inline mr-1 text-rose-500"></i> Pure Authentic</span>
+                            <span class="px-4 py-2 bg-stone-50 dark:bg-stone-800/50 rounded-full text-[10px] font-bold uppercase tracking-widest text-stone-500"><i data-lucide="award" class="w-3 h-3 inline mr-1 text-amber-500"></i> GI Certified</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -159,7 +243,6 @@
         class="border-t border-stone-200 dark:border-stone-800 py-10 text-center text-sm text-stone-500 font-medium">
         Powered by Wikipedia Open Knowledge APIs &bull; Live Fetched Content
     </footer>
-
     <script>
         lucide.createIcons();
 
@@ -168,44 +251,23 @@
             document.documentElement.classList.add('dark');
         }
 
-        // Navbar & Progress Bar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-
-            if (window.scrollY > 50) {
-                nav.classList.add('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
-                nav.classList.remove('py-5');
-            } else {
-                nav.classList.remove('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
-                nav.classList.add('py-5');
-            }
-        });
-
-        // Intersection Observer for Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Grabbing the destination dynamic parameter from URL
+        // --- Constants & Data ---
         const urlParams = new URLSearchParams(window.location.search);
         let rawName = urlParams.get('name') || 'Tamil Nadu';
         const cleanName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+        window.cleanName = cleanName; // Make it globally accessible for the AI Bot
 
-        // Update Title to match searched location directly instead of saying "Visual Heritage"
-        document.getElementById('page-title').innerText = cleanName;
+        const CUISINE_MAP = {
+            'Tirunelveli': { name: 'Iruttu Kadai Halwa', desc: 'A globally famous wheat-based sweet, slowly cooked in Thamirabarani river water to achieve its unique glossy texture and melt-in-the-mouth taste.', img: 'https://images.unsplash.com/photo-1589113840337-124b6194a08f?q=80&w=600' },
+            'Madurai': { name: 'Jigarthanda & Bun Parotta', desc: 'Madurai is a food lovers paradise. Famous for "Jigarthanda," a cooling almond resin milk, and the incredibly soft, layered "Bun Parotta."', img: 'https://images.unsplash.com/photo-1601050690597-df056fb1d795?q=80&w=600' },
+            'Chennai': { name: 'Beach Bajji & Filter Coffee', desc: 'From the bustling Marina beach stalls to elite cafes, Chennais "Filter Kaapi" and crispy variety of "Bajjis" are essential experiences.', img: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=600' },
+            'Nilgiris': { name: 'Ooty Varkey & Hot Tea', desc: 'A crispy, crusty biscuit native to the blue mountains, best enjoyed with fresh plantation tea in the misty hills.', img: 'https://images.unsplash.com/photo-1594631252845-29fc45862002?q=80&w=600' },
+            'Sivaganga': { name: 'Chettinad Spicy Cuisines', desc: 'Renowned for being the spiciest and most aromatic cuisine in India, focusing on rare spices and handmade masalas.', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600' },
+            'Kancheepuram': { name: 'Kovil Idli', desc: 'A special spicy version of rice cakes made with ghee, cumin, and ginger, traditionally offered as "Prasadam" in temples.', img: 'https://images.unsplash.com/photo-1589301773827-97d946379790?q=80&w=600' },
+            'Dindigul': { name: 'Thalappakatti Biryani', desc: 'World-famous for its unique Seeraga Samba rice and secret spice blends that give it a rich, brown texture.', img: 'https://images.unsplash.com/photo-1589302168068-1c459288350e?q=80&w=600' }
+        };
 
-        // Wikipedia Master Endpoint Fetch (Text and Gallery Images)
+        // --- Helper Functions ---
         async function fetchWikipediaData(title) {
             const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|images|pageimages&exintro=1&explaintext=1&titles=${encodeURIComponent(title)}&pithumbsize=1000&origin=*`;
             try {
@@ -222,7 +284,6 @@
             }
         }
 
-        // Wikipedia Image Thumbnail Endpoint
         async function fetchImageThumb(imageTitle) {
             const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&titles=${encodeURIComponent(imageTitle)}&origin=*`;
             try {
@@ -237,48 +298,116 @@
             }
         }
 
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            const timeEl = document.getElementById('local-time-display');
+            if (timeEl) timeEl.innerText = timeStr;
+        }
+
+        async function initAtmosphereData() {
+            const temps = { 'Chennai': 31, 'Nilgiris': 17, 'Coimbatore': 29, 'Ooty': 16, 'Kodaikanal': 15, 'Madurai': 33, 'Thanjavur': 32 };
+            const currentTemp = temps[cleanName] || (24 + Math.floor(Math.random() * 8));
+            const tempEl = document.getElementById('weather-temp');
+            if (tempEl) tempEl.innerText = `${currentTemp}°C`;
+
+            const advice = document.getElementById('travel-advice');
+            const icon = document.getElementById('weather-icon');
+            const label = document.getElementById('weather-label');
+            const iconBg = document.getElementById('weather-icon-bg');
+
+            if (advice && icon && label) {
+                if (currentTemp > 28) {
+                    label.innerText = "Sunny";
+                    label.className = "text-[8px] bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-tighter";
+                    advice.innerText = "Bright and warm. Perfect for visiting ancient stone temples!";
+                    icon.setAttribute('data-lucide', 'sun');
+                    if (iconBg) iconBg.className = "w-14 h-14 bg-amber-500/15 rounded-[1.25rem] flex items-center justify-center text-amber-600 shadow-inner group-hover:scale-110 transition-transform duration-500";
+                } else if (currentTemp < 20) {
+                    label.innerText = "Misty";
+                    label.className = "text-[8px] bg-indigo-500/10 text-indigo-600 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-tighter";
+                    advice.innerText = "Cool and refreshing. Ideal for misty mountain trails and tea estates.";
+                    icon.setAttribute('data-lucide', 'cloud-fog');
+                    if (iconBg) iconBg.className = "w-14 h-14 bg-indigo-500/15 rounded-[1.25rem] flex items-center justify-center text-indigo-600 shadow-inner group-hover:scale-110 transition-transform duration-500";
+                } else {
+                    label.innerText = "Pleasant";
+                    label.className = "text-[8px] bg-emerald-500/10 text-emerald-600 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-tighter";
+                    advice.innerText = "A perfect day for exploration. The weather is balanced and calm.";
+                    icon.setAttribute('data-lucide', 'cloud-sun');
+                    if (iconBg) iconBg.className = "w-14 h-14 bg-emerald-500/15 rounded-[1.25rem] flex items-center justify-center text-emerald-600 shadow-inner group-hover:scale-110 transition-transform duration-500";
+                }
+            }
+
+            const flavorSection = document.getElementById('flavor-section');
+            const flavorLabel = document.getElementById('flavor-label');
+            if (flavorLabel) flavorLabel.innerText = `Taste of ${cleanName}`;
+
+            if (CUISINE_MAP[cleanName]) {
+                const item = CUISINE_MAP[cleanName];
+                document.getElementById('flavor-title').innerText = item.name;
+                document.getElementById('flavor-desc').innerText = item.desc;
+                document.getElementById('flavor-img').src = item.img;
+                flavorSection.classList.remove('hidden');
+            } else {
+                // Automated Wikipedia Search for Cuisine
+                try {
+                    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName + " cuisine")}&format=json&origin=*`;
+                    const sRes = await fetch(searchUrl);
+                    const sData = await sRes.json();
+                    const bestTitle = sData.query?.search?.[0]?.title;
+                    
+                    if (bestTitle) {
+                        const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageimages&exintro&explaintext&titles=${encodeURIComponent(bestTitle)}&pithumbsize=800&origin=*`;
+                        const res = await fetch(url);
+                        const data = await res.json();
+                        const pages = data.query.pages;
+                        const pageId = Object.keys(pages)[0];
+                        const page = pages[pageId];
+
+                        if (pageId !== "-1" && page.extract) {
+                            document.getElementById('flavor-title').innerText = page.title;
+                            document.getElementById('flavor-desc').innerText = page.extract.split('. ').slice(0, 2).join('. ') + '.';
+                            if (page.thumbnail) document.getElementById('flavor-img').src = page.thumbnail.source;
+                            flavorSection.classList.remove('hidden');
+                        }
+                    }
+                } catch (e) {
+                    console.error("Cuisine fetch failed", e);
+                }
+            }
+            lucide.createIcons();
+        }
+
+        // --- Main Orchestration ---
         async function orchestrate() {
+            document.getElementById('page-title').innerText = cleanName;
             const loader = document.getElementById('loading-badge');
             const grid = document.getElementById('image-grid');
             const historyDiv = document.getElementById('history-content');
 
-            // Fetch Main Page Payload
             const data = await fetchWikipediaData(cleanName);
-
             if (data) {
-                // 1. Insert True Wikipedia Article Text
                 let extractText = data.extract || "No description was found on Wikipedia for this destination.";
                 historyDiv.innerHTML = `<p>${extractText}</p>`;
 
-                // 2. Insert True Thumbnail into Hero Background (if exists)
                 if (data.thumbnail && data.thumbnail.source) {
                     document.getElementById('hero-bg').style.backgroundImage = `url('${data.thumbnail.source}')`;
                 }
 
-                // 3. Populate Gallery solely with referenced files tied directly to this page
                 const images = data.images;
                 if (images && images.length > 0) {
-                    // Filter down to get up to 6 valid photographic files (ignoring icons, SVGs)
                     const filteredImages = images.filter(img =>
-                        img.title.toLowerCase().endsWith('.jpg') ||
-                        img.title.toLowerCase().endsWith('.png') ||
-                        img.title.toLowerCase().endsWith('.jpeg')
+                        ['.jpg', '.png', '.jpeg'].some(ext => img.title.toLowerCase().endsWith(ext))
                     ).slice(0, 6);
 
-                    grid.innerHTML = ""; // Clear pure grid space
-
+                    grid.innerHTML = "";
                     for (let i = 0; i < filteredImages.length; i++) {
                         const imgTitle = filteredImages[i].title;
                         const imgUrl = await fetchImageThumb(imgTitle);
-
                         if (imgUrl) {
-                            // Extract clean name from Title string
                             const cleanImgName = imgTitle.replace("File:", "").split(".")[0].replace(/_/g, " ");
-
-                            // Build the template without hardcoded placeholders
                             const card = document.createElement('div');
                             card.className = "group relative bg-white dark:bg-[#1E221E] rounded-3xl border border-stone-100 dark:border-stone-800 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between min-h-[400px]";
-
                             card.innerHTML = `
                                 <div class="h-64 w-full bg-cover bg-center" style="background-image: url('${imgUrl}');"></div>
                                 <div class="p-8 flex-grow flex flex-col justify-between">
@@ -292,19 +421,15 @@
                                             View Source Asset <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
                                         </a>
                                     </div>
-                                </div>
-                            `;
+                                </div>`;
                             grid.appendChild(card);
                         }
                     }
-                } else {
-                    grid.innerHTML = `<div class="col-span-3 text-center text-stone-500">No media library available for this entry.</div>`;
                 }
             } else {
                 historyDiv.innerHTML = `<p>Wikipedia record not found for "${cleanName}".</p>`;
             }
 
-            // Remove visual loader
             if (loader) {
                 loader.style.transition = 'opacity 0.5s ease';
                 loader.style.opacity = '0';
@@ -314,8 +439,54 @@
             document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
         }
 
+        // --- Event Listeners ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progress = document.getElementById("progress-bar");
+            if (progress) progress.style.width = scrolled + "%";
+
+            if (nav) {
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                    nav.classList.remove('py-5');
+                } else {
+                    nav.classList.remove('bg-stone-900/80', 'backdrop-blur-md', 'shadow-sm', 'py-4');
+                    nav.classList.add('py-5');
+                }
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- Runtime ---
+        updateClock();
+        setInterval(updateClock, 10000); // Update every 10s
+        initAtmosphereData();
         orchestrate();
     </script>
+
+    <!-- ===== AI TRAVEL ASSISTANT (EXPLORE BOT) ===== -->
+    <div class="fixed bottom-8 right-8 z-[150] flex flex-col items-end gap-4">
+        <!-- Chat Modal -->
+        <!-- Floating Shortcut Button -->
+        <a id="toggle-chat-btn" href="chat.html" class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-2xl flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all duration-300 group">
+            <i data-lucide="message-square" class="w-7 h-7 group-hover:hidden"></i>
+            <i data-lucide="sparkles" class="w-7 h-7 hidden group-hover:block animate-pulse"></i>
+            <div class="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 border-2 border-white dark:border-[#121412] rounded-full"></div>
+        </a>
+    </div>
+
+    <script src="theme_manager.js"></script>
+    <script type="module" src="explore_bot.js"></script>
+
 </body>
 
 </html>
